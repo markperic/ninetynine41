@@ -17,17 +17,25 @@ const NAV_LINKS = [
   { href: "/contact", label: "Contact" },
 ];
 
-/** Scroll distance, in px, before the bar solidifies to brand green. */
+/** Scroll distance, in px, before the bar solidifies and condenses. */
 const SOLID_AT = 40;
 
 /**
  * Site chrome, not a numbered catalog module — client-specific navigation.
- * A floating bar, fixed over the page: transparent with white text at rest
- * (so it reads over the hero photo), solid brand-green once the page has
- * scrolled past it. Height is fixed (`h-24`) — see `--page-chrome` in
- * globals.css, which the homepage sets to match so the hero's own content
- * clears it — same reasoning module 97 gives for a fixed-height wrapper
- * rather than one that resizes with the scroll state.
+ * A full-width bar, fixed over the page: transparent and tall (`h-24`) at
+ * rest so it reads over the hero photo, solid brand-green and condensed
+ * (`h-14`) once the page has scrolled past it — matching module 97's
+ * "condense past a threshold" pattern, just on height instead of opacity.
+ *
+ * Nav links are centered on the *bar*, not merely in the space left over
+ * between the logo and the social icons — they're `absolute` and
+ * `left-1/2 -translate-x-1/2` rather than a plain flex sibling, so their
+ * own width never fights the logo/icons for room, which is what was
+ * clipping the Donate pill before (the nav's flex allocation had ~30px
+ * less than its content needed).
+ *
+ * `--page-chrome` in globals.css is set to this bar's resting height
+ * (`6rem`) so the hero's own top padding clears it — see hero.tsx.
  */
 export function SiteHeader() {
   const [solid, setSolid] = useState(false);
@@ -44,11 +52,11 @@ export function SiteHeader() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 flex h-24 items-center px-6 transition-colors duration-300 ${
-        solid ? "bg-brand-green" : "bg-transparent"
+      className={`fixed inset-x-0 top-0 z-50 flex items-center px-6 transition-[height,background-color] duration-300 ${
+        solid ? "h-14 bg-brand-green shadow-sm" : "h-24 bg-transparent"
       }`}
     >
-      <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-6">
+      <div className="relative flex w-full items-center justify-between">
         <Link href="/" className="shrink-0">
           {/* Reversed to solid white — the full-color mark doesn't hold
               contrast over a photo or the dark-green bar, and a nav logo
@@ -59,11 +67,16 @@ export function SiteHeader() {
             width={169}
             height={28}
             priority
-            className="h-7 w-auto brightness-0 invert"
+            className={`w-auto brightness-0 invert transition-[height] duration-300 ${solid ? "h-5" : "h-7"}`}
           />
         </Link>
 
-        <nav className="overflow-x-auto">
+        {/* max-w reserves room for the logo + icon cluster + padding on
+            both sides (~20rem total) so centering never overlaps them;
+            overflow-x-auto is the fallback if links still don't fit below
+            that, same trick module 97 doesn't need but this bar does since
+            every link stays visible rather than collapsing to a hamburger. */}
+        <nav className="absolute top-1/2 left-1/2 max-w-[calc(100vw-20rem)] -translate-x-1/2 -translate-y-1/2 overflow-x-auto">
           <ul className="flex min-w-max items-center gap-7 text-sm font-semibold tracking-wide whitespace-nowrap text-white uppercase">
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
@@ -75,7 +88,7 @@ export function SiteHeader() {
             <li>
               <Link
                 href="/donate"
-                className="rounded-full bg-brand-orange px-5 py-2 normal-case tracking-normal text-white transition-colors hover:bg-brand-orange/90"
+                className="inline-block rounded-full bg-brand-orange px-5 py-2 normal-case tracking-normal text-white transition-colors hover:bg-brand-orange/90"
               >
                 Donate
               </Link>

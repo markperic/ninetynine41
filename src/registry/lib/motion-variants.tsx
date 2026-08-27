@@ -12,7 +12,7 @@
  * description Claude reads) and `variants` (the actual Motion values).
  */
 
-import { useRef, type ReactNode, type ElementType } from "react";
+import { useRef, type ReactNode, type ElementType, type CSSProperties } from "react";
 import {
   motion,
   useScroll,
@@ -42,7 +42,7 @@ export const effectCatalog: Record<
   I: { name: "Hover Lift", kind: "hover", description: "Micro-interaction: lifts 4px and scales to 102% on hover/tap. Use on cards and buttons, not on entrance." },
   J: { name: "Gradient Shimmer", kind: "entrance", description: "An animated gradient sweeps across the text on load. Reserve for one hero title per page — it's a lot if overused." },
   K: { name: "Text Reveal (Split)", kind: "entrance", description: "Splits a heading into words that stagger in on load, each rising and fading. The 'expensive text reveal' look, built on Effect F's stagger rather than a separate text-splitting library. Use on at most one headline per page, same restraint as Effect J." },
-  L: { name: "Giant Statement", kind: "scroll", description: "Splits a headline into words that fade and rise in together, staggered, the moment it scrolls into view — meant to be set at hero-scale type with a heavy/condensed display font. The 'editorial big-type' look (i-d.co/spotlight-style: large condensed sans, revealed on scroll, not a continuous scrub). Words can be individually highlighted. One per page, same restraint as J/K." },
+  L: { name: "Giant Line Fan", kind: "scroll", description: "For a stack of large-type lines: each line's letter-spacing scrubs from compressed to normal as the block scrolls through the viewport, fanning out symmetrically from its centered midpoint, one line after another. A continuous scroll-linked transform, not a one-shot — scrolling back up un-fans it in reverse, exactly tracking scroll position. Words per line can be individually highlighted. One per page, same restraint as J/K." },
 };
 
 export const variants: Record<Exclude<AnimationEffect, "H" | "I" | "J" | "K" | "L">, Variants> = {
@@ -259,65 +259,102 @@ export function SplitReveal({
   );
 }
 
-const wordStaggerContainer: Variants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.05, delayChildren: 0.04 } },
-};
-
-const wordStaggerItem: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
-};
-
-/**
- * Effect L — giant-type statement. Splits a headline into words that fade
- * and rise in together, staggered, the moment the block scrolls into view
- * (built on the same stagger mechanics as Effect F, just word-by-word
- * instead of card-by-card). Meant to be set at hero-scale type size with a
- * heavy/condensed display font by the caller — the "editorial big-type"
- * look (i-d.co/spotlight-style), which turns out to be a scroll-triggered
- * reveal rather than a continuous scroll-position scrub. Words listed in
- * `highlight` (matched case-insensitively, punctuation ignored) get
- * `highlightClassName` instead of the default text color. Use once per page.
- */
-export function ScrollWordHighlight({
-  as = "h2",
+function GiantFanLine({
+  text,
   className,
-  highlightClassName = "text-inherit",
-  children,
   highlight = [],
+  highlightClassName,
+  style,
+  progress,
+  start,
+  end,
 }: {
-  as?: ElementType;
+  text: string;
   className?: string;
-  highlightClassName?: string;
-  children: string;
   highlight?: string[];
+  highlightClassName?: string;
+  style?: CSSProperties;
+  progress: MotionValue<number>;
+  start: number;
+  end: number;
 }) {
-  const words = children.split(" ");
+  // Letter-spacing scrubbing from tightly compressed to normal, on a
+  // centered line, is what reads as "fanning out from the centre": the
+  // block's midpoint stays put while its rendered width grows outward
+  // symmetrically as spacing opens up. Plain useTransform bound to the
+  // shared scrollYProgress rather than animate()/whileInView, so it is
+  // reversible for free — Motion recomputes it on every scroll tick in
+  // either direction, no "played once" state to manage.
+  const letterSpacing = useTransform(progress, [start, end], ["-0.05em", "0em"]);
+  const opacity = useTransform(progress, [start, end], [0.12, 1]);
   const highlightSet = new Set(highlight.map((w) => w.toLowerCase()));
-  const MotionTag = motion[as as "div"] ?? motion.div;
+  const words = text.split(" ");
 
   return (
-    <MotionTag
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, margin: "-100px" }}
-      variants={wordStaggerContainer}
-      className={className}
-    >
+    <motion.div style={{ ...style, letterSpacing, opacity }} className={className}>
       {words.map((word, i) => {
         const bare = word.toLowerCase().replace(/[^a-z0-9]/g, "");
         const isHighlighted = highlightSet.has(bare);
         return (
-          <span key={i}>
-            <motion.span variants={wordStaggerItem} className={cn("inline-block", isHighlighted && highlightClassName)}>
-              {word}
-            </motion.span>
+          <span key={i} className={isHighlighted ? highlightClassName : undefined}>
+            {word}
             {i < words.length - 1 ? " " : ""}
           </span>
         );
       })}
-    </MotionTag>
+    </motion.div>
+  );
+}
+
+/**
+ * Effect L — giant line fan. For a stack of large-type lines (e.g. a
+ * statement broken one phrase per line), each line's letter-spacing scrubs
+ * from tightly compressed to normal as the block scrolls through the
+ * viewport, reading as the line fanning out symmetrically from its centered
+ * midpoint (each line needs its own `text-center` via `lineClassName` or
+ * per-line `className` for that symmetry to hold). Lines are staggered in
+ * sequence across the container's own scroll range — line 1 fans out
+ * first, the last line finishes last. Because every value here is a plain
+ * `useTransform` off one shared `scrollYProgress`, not a `whileInView` +
+ * `animate()` one-shot, the whole thing runs in both directions for free —
+ * scroll back up and the lines un-fan in reverse, exactly tracking scroll
+ * position. Give each line a `highlight` list for words that should render
+ * in `highlightClassName` instead of the line's own color (matched
+ * case-insensitively, punctuation ignored).
+ */
+export function GiantLineFan({
+  className,
+  lineClassName,
+  highlightClassName = "text-inherit",
+  lines,
+  offset = ["start 0.9", "end 0.25"],
+}: {
+  className?: string;
+  lineClassName?: string;
+  highlightClassName?: string;
+  lines: { text: string; className?: string; style?: CSSProperties; highlight?: string[] }[];
+  offset?: [string, string];
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: offset as never });
+  const count = lines.length;
+
+  return (
+    <div ref={ref} className={className}>
+      {lines.map((line, i) => (
+        <GiantFanLine
+          key={line.text}
+          text={line.text}
+          className={cn(lineClassName, line.className)}
+          style={line.style}
+          highlight={line.highlight}
+          highlightClassName={highlightClassName}
+          progress={scrollYProgress}
+          start={i / count}
+          end={(i + 1) / count}
+        />
+      ))}
+    </div>
   );
 }
 
