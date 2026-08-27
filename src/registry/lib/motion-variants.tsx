@@ -17,6 +17,7 @@ import {
   motion,
   useScroll,
   useTransform,
+  useSpring,
   useMotionValue,
   useMotionValueEvent,
   type MotionValue,
@@ -42,7 +43,7 @@ export const effectCatalog: Record<
   I: { name: "Hover Lift", kind: "hover", description: "Micro-interaction: lifts 4px and scales to 102% on hover/tap. Use on cards and buttons, not on entrance." },
   J: { name: "Gradient Shimmer", kind: "entrance", description: "An animated gradient sweeps across the text on load. Reserve for one hero title per page — it's a lot if overused." },
   K: { name: "Text Reveal (Split)", kind: "entrance", description: "Splits a heading into words that stagger in on load, each rising and fading. The 'expensive text reveal' look, built on Effect F's stagger rather than a separate text-splitting library. Use on at most one headline per page, same restraint as Effect J." },
-  L: { name: "Giant Line Fan", kind: "scroll", description: "For a stack of large-type lines: each line's letter-spacing scrubs from compressed to normal as the block scrolls through the viewport, fanning out symmetrically from its centered midpoint, one line after another. A continuous scroll-linked transform, not a one-shot — scrolling back up un-fans it in reverse, exactly tracking scroll position. Words per line can be individually highlighted. One per page, same restraint as J/K." },
+  L: { name: "Giant Line Fan", kind: "scroll", description: "For a stack of large-type lines: each line starts scaled down and gathered at its own center, then grows to full size as the block scrolls through the viewport, fanning out to full width one line after another. A spring-smoothed, continuous scroll-linked transform (not a one-shot) — scrolling back up gathers it back in, exactly tracking scroll position, no shake from raw per-frame values. Words per line can be individually highlighted. One per page, same restraint as J/K." },
 };
 
 export const variants: Record<Exclude<AnimationEffect, "H" | "I" | "J" | "K" | "L">, Variants> = {
@@ -278,20 +279,30 @@ function GiantFanLine({
   start: number;
   end: number;
 }) {
-  // Letter-spacing scrubbing from tightly compressed to normal, on a
-  // centered line, is what reads as "fanning out from the centre": the
-  // block's midpoint stays put while its rendered width grows outward
-  // symmetrically as spacing opens up. Plain useTransform bound to the
-  // shared scrollYProgress rather than animate()/whileInView, so it is
-  // reversible for free — Motion recomputes it on every scroll tick in
-  // either direction, no "played once" state to manage.
-  const letterSpacing = useTransform(progress, [start, end], ["-0.05em", "0em"]);
-  const opacity = useTransform(progress, [start, end], [0.12, 1]);
+  // Uniform `scale`, not letter-spacing: the line starts gathered small at
+  // its own center (transform-origin defaults to 50% 50%) and grows to full
+  // size, which reads as "fanning out to full width" without distorting any
+  // glyph — and, being a `transform`, it's compositor-only, so it doesn't
+  // force layout/reflow on every scroll tick the way animating
+  // letter-spacing did (that was the source of the shake/wobble: the browser
+  // re-laying-out a whitespace-nowrap, center-aligned line every frame).
+  //
+  // Raw scroll progress is jittery frame to frame — Lenis smooths the
+  // scroll position itself, but a value re-derived from it every tick still
+  // has no easing of its own. useSpring smooths that out and is what
+  // supplies the "some easing" feel, while still continuously tracking
+  // wherever the raw scroll-derived target currently is, in either
+  // direction — unlike a duration-based animate() tween, a spring has no
+  // notion of "done" to get stuck at when scroll direction reverses mid-flight.
+  const rawScale = useTransform(progress, [start, end], [0.2, 1]);
+  const scale = useSpring(rawScale, { stiffness: 110, damping: 20, mass: 0.4 });
+  const rawOpacity = useTransform(progress, [start, end], [0.12, 1]);
+  const opacity = useSpring(rawOpacity, { stiffness: 110, damping: 20, mass: 0.4 });
   const highlightSet = new Set(highlight.map((w) => w.toLowerCase()));
   const words = text.split(" ");
 
   return (
-    <motion.div style={{ ...style, letterSpacing, opacity }} className={className}>
+    <motion.div style={{ ...style, scale, opacity }} className={className}>
       {words.map((word, i) => {
         const bare = word.toLowerCase().replace(/[^a-z0-9]/g, "");
         const isHighlighted = highlightSet.has(bare);
@@ -308,18 +319,19 @@ function GiantFanLine({
 
 /**
  * Effect L — giant line fan. For a stack of large-type lines (e.g. a
- * statement broken one phrase per line), each line's letter-spacing scrubs
- * from tightly compressed to normal as the block scrolls through the
- * viewport, reading as the line fanning out symmetrically from its centered
- * midpoint (each line needs its own `text-center` via `lineClassName` or
- * per-line `className` for that symmetry to hold). Lines are staggered in
- * sequence across the container's own scroll range — line 1 fans out
- * first, the last line finishes last. Because every value here is a plain
- * `useTransform` off one shared `scrollYProgress`, not a `whileInView` +
- * `animate()` one-shot, the whole thing runs in both directions for free —
- * scroll back up and the lines un-fan in reverse, exactly tracking scroll
- * position. Give each line a `highlight` list for words that should render
- * in `highlightClassName` instead of the line's own color (matched
+ * statement broken one phrase per line): each line starts scaled down,
+ * gathered at its own center, and grows to full size as the block scrolls
+ * through the viewport — reading as the line fanning out to full width
+ * (each line needs its own `text-center` via `lineClassName` or per-line
+ * `className` so it's centered at rest, matching where it grows from).
+ * Lines are staggered in sequence across the container's own scroll range —
+ * line 1 fans out first, the last line finishes last. The scale/opacity are
+ * `useSpring`-smoothed scroll-linked values (see `GiantFanLine`), not a
+ * `whileInView` + `animate()` one-shot, so the whole thing runs in both
+ * directions for free — scroll back up and the lines gather back in,
+ * continuously tracking scroll position rather than playing once. Give
+ * each line a `highlight` list for words that should render in
+ * `highlightClassName` instead of the line's own color (matched
  * case-insensitively, punctuation ignored).
  */
 export function GiantLineFan({

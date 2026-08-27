@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Mail, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { Reveal, StaggerGroup } from "@/registry/lib/motion-variants";
 
 /**
@@ -20,10 +20,8 @@ import { Reveal, StaggerGroup } from "@/registry/lib/motion-variants";
  * label. Past `xl` the auto margins have taken over, so it steps back down
  * to match the right side.
  *
- * The headline block is centered in the space below the email row (a
- * `flex-1` sibling wrapping it), rather than pinned to the section's
- * bottom edge — reads as "sitting higher" without needing a fixed offset
- * that would fight `min-h-[85vh]` at other viewport heights.
+ * The headline block is centered vertically in the section (a `flex-1`
+ * wrapper around it) rather than pinned to the bottom edge.
  */
 export function Hero() {
   return (
@@ -43,17 +41,6 @@ export function Hero() {
       </div>
       <div className="pointer-events-none absolute top-1/2 right-4 hidden -translate-y-1/2 text-xs font-semibold tracking-[0.3em] text-white/70 [writing-mode:vertical-rl] sm:block">
         FACEBOOK
-      </div>
-
-      <div className="relative mx-auto flex w-full max-w-6xl justify-end">
-        <a
-          href="mailto:info@ninetynine41.org"
-          className="flex items-center gap-2 text-sm font-medium text-white/90 transition-colors hover:text-brand-orange"
-        >
-          <Mail className="h-4 w-4 text-brand-orange" />
-          <span className="hidden sm:inline">EMAIL</span>
-          <span>info@ninetynine41.org</span>
-        </a>
       </div>
 
       <div className="relative flex flex-1 items-center">
