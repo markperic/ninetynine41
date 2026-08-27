@@ -11,10 +11,23 @@ import { Reveal, StaggerGroup } from "@/registry/lib/motion-variants";
  * Top padding clears the fixed SiteHeader via `--page-chrome` (set on the
  * page root) rather than a hardcoded value, so the two stay in sync if the
  * header's height ever changes.
+ *
+ * Left padding is wider than the right from `sm` up (where the vertical
+ * INSTAGRAM label switches on) so the headline never runs into it — at the
+ * widths where content still sits flush against the section's own padding
+ * (before `max-w-6xl`'s auto margins start doing the centering themselves,
+ * around 1152px), `pl-8`/`pl-6` alone put body copy right underneath the
+ * label. Past `xl` the auto margins have taken over, so it steps back down
+ * to match the right side.
+ *
+ * The headline block is centered in the space below the email row (a
+ * `flex-1` sibling wrapping it), rather than pinned to the section's
+ * bottom edge — reads as "sitting higher" without needing a fixed offset
+ * that would fight `min-h-[85vh]` at other viewport heights.
  */
 export function Hero() {
   return (
-    <section className="relative flex min-h-[85vh] flex-col justify-between overflow-hidden bg-brand-green px-6 pt-[calc(var(--page-chrome)+1.5rem)] pb-14">
+    <section className="relative flex min-h-[85vh] flex-col overflow-hidden bg-brand-green pr-6 pl-8 sm:pl-16 xl:pl-6 pt-[calc(var(--page-chrome)+1.5rem)] pb-14">
       <Image
         src="/brand/hero-cliff.jpg"
         alt=""
@@ -43,29 +56,31 @@ export function Hero() {
         </a>
       </div>
 
-      <div className="relative mx-auto w-full max-w-6xl">
-        <Reveal effect="B" as="h1" className="max-w-3xl text-5xl leading-[0.95] font-semibold tracking-tight text-white sm:text-7xl">
-          For the <span className="text-brand-orange">ONE</span>
-          <br />
-          who has no one.
-        </Reveal>
-
-        <StaggerGroup className="mt-6 flex flex-col gap-6">
-          <Reveal effect="A" as="p" className="max-w-md text-base text-white/80 sm:text-lg">
-            Ever wanted to make a change in the world but didn&rsquo;t know where to start?{" "}
-            <span className="font-semibold text-brand-orange">Ninetynine41</span> is your answer.
+      <div className="relative flex flex-1 items-center">
+        <div className="mx-auto w-full max-w-6xl">
+          <Reveal effect="B" as="h1" className="max-w-3xl text-5xl leading-[0.95] font-semibold tracking-tight text-white sm:text-7xl">
+            For the <span className="text-brand-orange">ONE</span>
+            <br />
+            who has no one.
           </Reveal>
 
-          <Reveal effect="A" as="div">
-            <a
-              href="/about"
-              className="inline-flex items-center gap-2 rounded-full bg-brand-orange px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-orange/90"
-            >
-              Change starts here
-              <ArrowUpRight className="h-4 w-4" />
-            </a>
-          </Reveal>
-        </StaggerGroup>
+          <StaggerGroup className="mt-6 flex flex-col gap-6">
+            <Reveal effect="A" as="p" className="max-w-md text-base text-white/80 sm:text-lg">
+              Ever wanted to make a change in the world but didn&rsquo;t know where to start?{" "}
+              <span className="font-semibold text-brand-orange">Ninetynine41</span> is your answer.
+            </Reveal>
+
+            <Reveal effect="A" as="div">
+              <a
+                href="/about"
+                className="inline-flex items-center gap-2 rounded-full bg-brand-orange px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-orange/90"
+              >
+                Change starts here
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
+            </Reveal>
+          </StaggerGroup>
+        </div>
       </div>
     </section>
   );
