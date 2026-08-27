@@ -1,0 +1,956 @@
+{
+  "$schema": "./modules.schema.json",
+  "description": "The numbered module catalog. Claude Code reads this file to resolve instructions like 'use module 5' to a real component, its default animation effects, and which named elements inside it are meant to be adjustable (see 'editable').",
+  "modules": [
+    {
+      "id": 1,
+      "name": "Hero — Centered",
+      "category": "hero",
+      "file": "src/registry/modules/01-hero-centered.tsx",
+      "component": "HeroCentered",
+      "description": "Single-column hero: eyebrow, headline, subhead, two CTAs, no image.",
+      "editable": { "title": "K", "body/cta group": "F (stagger of A)" }
+    },
+    {
+      "id": 2,
+      "name": "Hero — Split with Visual",
+      "category": "hero",
+      "file": "src/registry/modules/02-hero-split.tsx",
+      "component": "HeroSplit",
+      "description": "Two-column hero: copy + CTA left, visual placeholder right.",
+      "editable": { "title": "A", "visual": "E" }
+    },
+    {
+      "id": 3,
+      "name": "Logo Cloud",
+      "category": "social-proof",
+      "file": "src/registry/modules/03-logo-cloud.tsx",
+      "component": "LogoCloud",
+      "description": "Row of client/partner logo placeholders.",
+      "editable": { "logo row": "F (stagger of A)" }
+    },
+    {
+      "id": 4,
+      "name": "Feature Grid — 3 Column",
+      "category": "content",
+      "file": "src/registry/modules/04-feature-grid.tsx",
+      "component": "FeatureGrid",
+      "description": "Icon + title + description, repeated three times.",
+      "editable": { "heading": "A", "cards": "F (stagger of A)" }
+    },
+    {
+      "id": 5,
+      "name": "Content Split — Image Right",
+      "category": "content",
+      "file": "src/registry/modules/05-content-split.tsx",
+      "component": "ContentSplit",
+      "description": "Mid-page section: eyebrow/title/body left, visual right. The worked example in MODULE-LIBRARY.md references this module's title.",
+      "editable": { "title": "B", "visual": "E", "body": "A" }
+    },
+    {
+      "id": 6,
+      "name": "Stats Row",
+      "category": "stats",
+      "file": "src/registry/modules/06-stats-row.tsx",
+      "component": "StatsRow",
+      "description": "3–4 large numbers with labels on a dark background.",
+      "editable": { "stats": "F (stagger of A)" }
+    },
+    {
+      "id": 7,
+      "name": "Testimonial — Single Quote",
+      "category": "social-proof",
+      "file": "src/registry/modules/07-testimonial.tsx",
+      "component": "Testimonial",
+      "description": "Large centered quote with attribution.",
+      "editable": { "block": "G" }
+    },
+    {
+      "id": 8,
+      "name": "Testimonial Grid",
+      "category": "social-proof",
+      "file": "src/registry/modules/08-testimonial-grid.tsx",
+      "component": "TestimonialGrid",
+      "description": "3 short quotes in hoverable cards.",
+      "editable": { "cards": "F (stagger of A)", "card hover": "I" }
+    },
+    {
+      "id": 9,
+      "name": "Pricing Grid — 3 Tier",
+      "category": "pricing",
+      "file": "src/registry/modules/09-pricing-grid.tsx",
+      "component": "PricingGrid",
+      "description": "3-tier pricing cards with the middle tier highlighted.",
+      "editable": { "cards": "F (stagger of A)", "card hover": "I" }
+    },
+    {
+      "id": 10,
+      "name": "FAQ Accordion",
+      "category": "faqs",
+      "file": "src/registry/modules/10-faq-accordion.tsx",
+      "component": "FaqAccordion",
+      "description": "Expandable question list.",
+      "editable": { "questions": "F (stagger of A)" }
+    },
+    {
+      "id": 11,
+      "name": "Team Grid",
+      "category": "team",
+      "file": "src/registry/modules/11-team-grid.tsx",
+      "component": "TeamGrid",
+      "description": "Photo, name, role — repeated in a 4-column grid.",
+      "editable": { "cards": "F (stagger of E)" }
+    },
+    {
+      "id": 12,
+      "name": "CTA Banner",
+      "category": "cta",
+      "file": "src/registry/modules/12-cta-banner.tsx",
+      "component": "CtaBanner",
+      "description": "Full-width closing call-to-action block.",
+      "editable": { "block": "G" }
+    },
+    {
+      "id": 13,
+      "name": "Newsletter Signup",
+      "category": "cta",
+      "file": "src/registry/modules/13-newsletter.tsx",
+      "component": "Newsletter",
+      "description": "Compact centered email capture form.",
+      "editable": { "block": "A" }
+    },
+    {
+      "id": 14,
+      "name": "Gallery — Scroll Parallax",
+      "category": "content",
+      "file": "src/registry/modules/14-gallery-scroll.tsx",
+      "component": "GalleryScroll",
+      "description": "3-image row with scroll-linked parallax drift. The worked example in MODULE-LIBRARY.md references this module's images.",
+      "editable": { "heading": "A", "images": "H" }
+    },
+    {
+      "id": 15,
+      "name": "Footer — Multi Column",
+      "category": "footer",
+      "file": "src/registry/modules/15-footer.tsx",
+      "component": "Footer",
+      "description": "4-column footer with link groups. No entrance animation by convention.",
+      "editable": {}
+    },
+    {
+      "id": 16,
+      "name": "Hero — Macbook Scroll Reveal",
+      "category": "showcase",
+      "file": "src/registry/modules/16-hero-macbook-scroll.tsx",
+      "component": "HeroMacbookScroll",
+      "description": "Tall sticky section: a laptop mockup opens and its screen scales in as you scroll past. Recreated from scratch with motion's scroll hooks, inspired by Aceternity's Macbook Scroll.",
+      "editable": { "title": "B", "screen content": "custom scroll-linked, see file" }
+    },
+    {
+      "id": 17,
+      "name": "Hero — Spotlight",
+      "category": "hero",
+      "file": "src/registry/modules/17-hero-spotlight.tsx",
+      "component": "HeroSpotlight",
+      "description": "Dark hero with a blurred radial spotlight glow and faded grid behind centered copy.",
+      "editable": { "title": "B", "body/cta group": "F (stagger of A)" }
+    },
+    {
+      "id": 18,
+      "name": "Hero — Aurora Background",
+      "category": "hero",
+      "file": "src/registry/modules/18-hero-aurora.tsx",
+      "component": "HeroAurora",
+      "description": "Dark hero with three large gradient blobs drifting slowly behind centered copy (shared animate-aurora keyframe).",
+      "editable": { "title": "B", "body/cta group": "F (stagger of A)" }
+    },
+    {
+      "id": 19,
+      "name": "Hero — Grid Background",
+      "category": "hero",
+      "file": "src/registry/modules/19-hero-grid.tsx",
+      "component": "HeroGrid",
+      "description": "Light hero with a faded CSS grid-line background behind centered copy and a badge eyebrow.",
+      "editable": { "title": "A", "body/cta group": "F (stagger of A)" }
+    },
+    {
+      "id": 20,
+      "name": "Hero — Bento Product Grid",
+      "category": "hero",
+      "file": "src/registry/modules/20-hero-bento.tsx",
+      "component": "HeroBento",
+      "description": "Split hero: copy + CTA left, a bento-style grid of product tiles right, staggering in on scale.",
+      "editable": { "title": "A", "bento tiles": "F (stagger of E)" }
+    },
+    {
+      "id": 21,
+      "name": "Hero — Marquee Logo Wall",
+      "category": "hero",
+      "file": "src/registry/modules/21-hero-marquee.tsx",
+      "component": "HeroMarquee",
+      "description": "Centered headline/CTA with an infinite horizontal logo marquee below (shared animate-marquee keyframe, pauses on hover).",
+      "editable": { "title": "B", "logo marquee": "custom loop, see file" }
+    },
+    {
+      "id": 22,
+      "name": "Hero — Text Generate",
+      "category": "hero",
+      "file": "src/registry/modules/22-hero-text-generate.tsx",
+      "component": "HeroTextGenerate",
+      "description": "Headline splits into words that stagger in one by one (Effect F wrapping Effect A at word granularity).",
+      "editable": { "title": "F (word-level stagger of A)", "body/cta group": "F (stagger of A)" }
+    },
+    {
+      "id": 23,
+      "name": "Hero — Gradient Beams",
+      "category": "hero",
+      "file": "src/registry/modules/23-hero-beams.tsx",
+      "component": "HeroBeams",
+      "description": "Dark hero with drifting diagonal gradient beams and a CTA button with an animated spinning gradient border.",
+      "editable": { "title": "B", "cta border": "custom spinning ring, see file" }
+    },
+    {
+      "id": 24,
+      "name": "Hero — Device Split with Play Button",
+      "category": "hero",
+      "file": "src/registry/modules/24-hero-device-split.tsx",
+      "component": "HeroDeviceSplit",
+      "description": "Split hero: copy + CTA left, browser-window mockup right with a gradient video placeholder and a hover-lift play button.",
+      "editable": { "title": "A", "visual": "E", "play button hover": "I" }
+    },
+    {
+      "id": 25,
+      "name": "Hero — 3D Tilt Card",
+      "category": "hero",
+      "file": "src/registry/modules/25-hero-3d-tilt.tsx",
+      "component": "Hero3DTilt",
+      "description": "Split hero: copy left, a product card right that tilts in 3D perspective following the cursor and springs back on mouse leave.",
+      "editable": { "title": "A", "visual": "custom mouse-tilt, see file" }
+    },
+    {
+      "id": 26,
+      "name": "Content — Process Timeline",
+      "category": "content",
+      "file": "src/registry/modules/26-content-timeline.tsx",
+      "component": "ContentTimeline",
+      "description": "Numbered steps, horizontal on desktop, stacked on mobile.",
+      "editable": { "heading": "A", "steps": "F (stagger of A)" }
+    },
+    {
+      "id": 27,
+      "name": "Content — Comparison Table",
+      "category": "content",
+      "file": "src/registry/modules/27-content-comparison-table.tsx",
+      "component": "ContentComparisonTable",
+      "description": "Two-column \"us vs. them\" feature comparison table.",
+      "editable": { "heading": "A", "table": "G" }
+    },
+    {
+      "id": 28,
+      "name": "Content — Tabs Showcase",
+      "category": "content",
+      "file": "src/registry/modules/28-content-tabs.tsx",
+      "component": "ContentTabs",
+      "description": "Tabbed panel switching between three short text/visual states. Local interactive state, not part of the A-J catalog.",
+      "editable": { "heading": "A", "tabs": "A" }
+    },
+    {
+      "id": 29,
+      "name": "Content — Video Embed",
+      "category": "content",
+      "file": "src/registry/modules/29-content-video-embed.tsx",
+      "component": "ContentVideoEmbed",
+      "description": "Standalone centered video placeholder with a hover-lift play button.",
+      "editable": { "heading": "A", "frame": "E", "play button hover": "I" }
+    },
+    {
+      "id": 30,
+      "name": "Content — Checklist Split",
+      "category": "content",
+      "file": "src/registry/modules/30-content-checklist-split.tsx",
+      "component": "ContentChecklistSplit",
+      "description": "Visual left, checklist of benefits right — a variant of module 05 with the image on the opposite side and a list instead of a paragraph.",
+      "editable": { "title": "A", "visual": "E", "checklist": "F (stagger of A)" }
+    },
+    {
+      "id": 31,
+      "name": "Social Proof — Case Study Cards",
+      "category": "social-proof",
+      "file": "src/registry/modules/31-social-case-studies.tsx",
+      "component": "SocialCaseStudies",
+      "description": "Logo placeholder + headline result metric + link, per card.",
+      "editable": { "heading": "A", "cards": "F (stagger of A)", "card hover": "I" }
+    },
+    {
+      "id": 32,
+      "name": "Social Proof — Press Mentions",
+      "category": "social-proof",
+      "file": "src/registry/modules/32-social-press.tsx",
+      "component": "SocialPress",
+      "description": "\"As featured in\" row with a pull-quote per outlet.",
+      "editable": { "row": "F (stagger of A)" }
+    },
+    {
+      "id": 33,
+      "name": "Social Proof — Rating Summary",
+      "category": "social-proof",
+      "file": "src/registry/modules/33-social-rating-summary.tsx",
+      "component": "SocialRatingSummary",
+      "description": "Large average rating and review count, plus three short review snippets.",
+      "editable": { "score": "B", "snippets": "F (stagger of A)" }
+    },
+    {
+      "id": 34,
+      "name": "Social Proof — Trust Badges",
+      "category": "social-proof",
+      "file": "src/registry/modules/34-social-trust-badges.tsx",
+      "component": "SocialTrustBadges",
+      "description": "Compact row of security/compliance badges (SOC 2, GDPR, uptime).",
+      "editable": { "badges": "F (stagger of A)" }
+    },
+    {
+      "id": 35,
+      "name": "Social Proof — Video Testimonial Grid",
+      "category": "social-proof",
+      "file": "src/registry/modules/35-social-video-testimonials.tsx",
+      "component": "SocialVideoTestimonials",
+      "description": "Testimonial cards framed as short videos with a hover-lift play button, distinct from module 08's text-quote grid.",
+      "editable": { "heading": "A", "cards": "F (stagger of A)", "play button hover": "I" }
+    },
+    {
+      "id": 36,
+      "name": "Social Proof — Single Powerful Stat",
+      "category": "stats",
+      "file": "src/registry/modules/36-social-big-stat.tsx",
+      "component": "SocialBigStat",
+      "description": "One dramatic full-width number with a supporting line, distinct from module 06's 3-up stats row.",
+      "editable": { "number": "J (Gradient Shimmer)", "supporting line": "A" }
+    },
+    {
+      "id": 37,
+      "name": "Pricing — Two Tier",
+      "category": "pricing",
+      "file": "src/registry/modules/37-pricing-two-tier.tsx",
+      "component": "PricingTwoTier",
+      "description": "Two larger plan cards, for products with a simpler pricing story than module 09's 3-tier grid.",
+      "editable": { "heading": "A", "cards": "F (stagger of A)", "card hover": "I" }
+    },
+    {
+      "id": 38,
+      "name": "Pricing — Single Plan Highlight",
+      "category": "pricing",
+      "file": "src/registry/modules/38-pricing-single-highlight.tsx",
+      "component": "PricingSingleHighlight",
+      "description": "One centered plan card, no tiers to compare.",
+      "editable": { "heading": "A", "card": "E" }
+    },
+    {
+      "id": 39,
+      "name": "Pricing — Feature Comparison Table",
+      "category": "pricing",
+      "file": "src/registry/modules/39-pricing-comparison-table.tsx",
+      "component": "PricingComparisonTable",
+      "description": "Full feature matrix across three plans.",
+      "editable": { "heading": "A", "table": "G" }
+    },
+    {
+      "id": 40,
+      "name": "Pricing — Monthly/Annual Toggle",
+      "category": "pricing",
+      "file": "src/registry/modules/40-pricing-toggle.tsx",
+      "component": "PricingToggle",
+      "description": "A toggle switches the displayed price between monthly and annual. Local interactive state, not part of the A-J catalog.",
+      "editable": { "heading": "A", "cards": "F (stagger of A)", "card hover": "I" }
+    },
+    {
+      "id": 41,
+      "name": "Pricing — Plans + Enterprise Contact",
+      "category": "pricing",
+      "file": "src/registry/modules/41-pricing-enterprise-cta.tsx",
+      "component": "PricingEnterpriseCta",
+      "description": "Two standard plans plus a distinct \"talk to us\" enterprise card.",
+      "editable": { "heading": "A", "cards": "F (stagger of A)", "card hover": "I" }
+    },
+    {
+      "id": 42,
+      "name": "Pricing — Usage-Based Slider",
+      "category": "pricing",
+      "file": "src/registry/modules/42-pricing-usage-slider.tsx",
+      "component": "PricingUsageSlider",
+      "description": "A slider drives the displayed price for a usage-based product. Local interactive state, not part of the A-J catalog.",
+      "editable": { "heading": "A", "card": "E" }
+    },
+    {
+      "id": 43,
+      "name": "Pricing — Freemium Callout",
+      "category": "pricing",
+      "file": "src/registry/modules/43-pricing-freemium.tsx",
+      "component": "PricingFreemium",
+      "description": "Free vs. Pro, deliberately asymmetric — Pro is the visually obvious upgrade.",
+      "editable": { "heading": "A", "cards": "F (stagger of A)", "pro card hover": "I" }
+    },
+    {
+      "id": 44,
+      "name": "Pricing — Minimal Centered",
+      "category": "pricing",
+      "file": "src/registry/modules/44-pricing-minimal-centered.tsx",
+      "component": "PricingMinimalCentered",
+      "description": "No card, no border, no feature list — just a price and a CTA.",
+      "editable": { "price": "B", "body/cta": "F (stagger of A)" }
+    },
+    {
+      "id": 45,
+      "name": "Pricing — Testimonial Sidebar",
+      "category": "pricing",
+      "file": "src/registry/modules/45-pricing-testimonial-sidebar.tsx",
+      "component": "PricingTestimonialSidebar",
+      "description": "A single pricing card paired with a quote that reinforces the value.",
+      "editable": { "card": "A", "quote": "C" }
+    },
+    {
+      "id": 46,
+      "name": "CTA — Split with Visual",
+      "category": "cta",
+      "file": "src/registry/modules/46-cta-split-visual.tsx",
+      "component": "CtaSplitVisual",
+      "description": "Copy + CTA left, gradient visual right — more visual weight than module 12's plain banner.",
+      "editable": { "title": "A", "visual": "E" }
+    },
+    {
+      "id": 47,
+      "name": "CTA — Countdown Banner",
+      "category": "cta",
+      "file": "src/registry/modules/47-cta-countdown.tsx",
+      "component": "CtaCountdown",
+      "description": "A live countdown to a fixed offer deadline. The timer itself is local interactive state, not part of the A-J catalog.",
+      "editable": { "block": "G" }
+    },
+    {
+      "id": 48,
+      "name": "CTA — Two Choice",
+      "category": "cta",
+      "file": "src/registry/modules/48-cta-two-choice.tsx",
+      "component": "CtaTwoChoice",
+      "description": "Two audience-specific paths side by side instead of one generic CTA.",
+      "editable": { "heading": "A", "cards": "F (stagger of A)", "card hover": "I" }
+    },
+    {
+      "id": 49,
+      "name": "CTA — Testimonial Combo",
+      "category": "cta",
+      "file": "src/registry/modules/49-cta-testimonial-combo.tsx",
+      "component": "CtaTestimonialCombo",
+      "description": "A quote paired directly with the ask, so social proof and conversion happen in the same glance.",
+      "editable": { "block": "G" }
+    },
+    {
+      "id": 50,
+      "name": "CTA — Spotlight Banner",
+      "category": "cta",
+      "file": "src/registry/modules/50-cta-spotlight.tsx",
+      "component": "CtaSpotlight",
+      "description": "Dark closing section reusing the spotlight-glow treatment from hero module 17, scaled to a banner.",
+      "editable": { "title": "B", "body/cta": "F (stagger of A)" }
+    },
+    {
+      "id": 51,
+      "name": "CTA — Minimal Inline",
+      "category": "cta",
+      "file": "src/registry/modules/51-cta-minimal-inline.tsx",
+      "component": "CtaMinimalInline",
+      "description": "A single thin bar — one line of copy and a text link, no card or heavy padding.",
+      "editable": { "block": "A" }
+    },
+    {
+      "id": 52,
+      "name": "CTA — App Download",
+      "category": "cta",
+      "file": "src/registry/modules/52-cta-app-download.tsx",
+      "component": "CtaAppDownload",
+      "description": "Split closing section for a mobile app: copy + store badges left, phone mockup right.",
+      "editable": { "title": "A", "store badges": "F (stagger of A)", "phone": "E" }
+    },
+    {
+      "id": 53,
+      "name": "CTA — Contact Form",
+      "category": "forms",
+      "file": "src/registry/modules/53-cta-contact-form.tsx",
+      "component": "CtaContactForm",
+      "description": "A closing section with an inline contact form instead of a single button, for sales-assisted products.",
+      "editable": { "block": "A" }
+    },
+    {
+      "id": 54,
+      "name": "Footer — Minimal Single Row",
+      "category": "footer",
+      "file": "src/registry/modules/54-footer-minimal-row.tsx",
+      "component": "FooterMinimalRow",
+      "description": "Logo, inline links, and copyright in one row. No entrance animation by convention.",
+      "editable": {}
+    },
+    {
+      "id": 55,
+      "name": "Footer — Newsletter Row",
+      "category": "footer",
+      "file": "src/registry/modules/55-footer-newsletter.tsx",
+      "component": "FooterNewsletter",
+      "description": "An embedded email signup above the standard column layout. No entrance animation by convention.",
+      "editable": {}
+    },
+    {
+      "id": 56,
+      "name": "Footer — Mega with Social",
+      "category": "footer",
+      "file": "src/registry/modules/56-footer-mega-social.tsx",
+      "component": "FooterMegaSocial",
+      "description": "Larger 5-column footer with a social icon row. No entrance animation by convention.",
+      "editable": {}
+    },
+    {
+      "id": 57,
+      "name": "Footer — Centered Simple",
+      "category": "footer",
+      "file": "src/registry/modules/57-footer-centered-simple.tsx",
+      "component": "FooterCenteredSimple",
+      "description": "Logo, links, and copyright all centered, for a quieter editorial close. No entrance animation by convention.",
+      "editable": {}
+    },
+    {
+      "id": 58,
+      "name": "Footer — App Download",
+      "category": "footer",
+      "file": "src/registry/modules/58-footer-app-download.tsx",
+      "component": "FooterAppDownload",
+      "description": "Store badges get top billing above the usual link columns. No entrance animation by convention.",
+      "editable": {}
+    },
+    {
+      "id": 59,
+      "name": "Footer — Dark",
+      "category": "footer",
+      "file": "src/registry/modules/59-footer-dark.tsx",
+      "component": "FooterDark",
+      "description": "Dark-background variant of the multi-column footer, for pages that close on a dark note. No entrance animation by convention.",
+      "editable": {}
+    },
+    {
+      "id": 60,
+      "name": "Footer — CTA Strip",
+      "category": "footer",
+      "file": "src/registry/modules/60-footer-cta-strip.tsx",
+      "component": "FooterCtaStrip",
+      "description": "A closing ask built into the top of the footer, for pages that skip a separate CTA module. No entrance animation by convention.",
+      "editable": {}
+    },
+    {
+      "id": 61,
+      "name": "Footer — Brand + Tagline",
+      "category": "footer",
+      "file": "src/registry/modules/61-footer-brand-tagline.tsx",
+      "component": "FooterBrandTagline",
+      "description": "A bigger brand mark and mission statement above the link columns. No entrance animation by convention.",
+      "editable": {}
+    },
+    {
+      "id": 62,
+      "name": "Footer — Sitemap",
+      "category": "footer",
+      "file": "src/registry/modules/62-footer-sitemap.tsx",
+      "component": "FooterSitemap",
+      "description": "Dense 6-column footer for large sites with a lot to link to. No entrance animation by convention.",
+      "editable": {}
+    },
+    {
+      "id": 63,
+      "name": "Hero — Illuminated Glow",
+      "category": "hero",
+      "file": "src/registry/modules/63-hero-illuminated-glow.tsx",
+      "component": "HeroIlluminatedGlow",
+      "description": "Full-viewport black hero with warm/cool blurred glow blobs fading in behind centered copy, and a neon text-shadow glow on the highlighted headline line. Adapted from 21st.dev's Illuminated Hero.",
+      "editable": { "title": "B", "background glow": "custom load-in blobs (--animate-glow-in), see file", "body/cta group": "F (stagger of A)" }
+    },
+    {
+      "id": 64,
+      "name": "Content — Carousel Card",
+      "category": "content",
+      "file": "src/registry/modules/64-content-carousel-card.tsx",
+      "component": "ContentCarouselCard",
+      "description": "One large image + copy card at a time, stepped through with prev/next controls and dot pagination. Local carousel state, not part of the A-J catalog. Adapted from 21st.dev's Carousel Card.",
+      "editable": { "heading": "A", "cards": "custom carousel state (AnimatePresence crossfade), see file" }
+    },
+    {
+      "id": 65,
+      "name": "Gallery — Accordion",
+      "category": "galleries",
+      "file": "src/registry/modules/65-gallery-accordion.tsx",
+      "component": "GalleryAccordion",
+      "description": "A row of panels where the active one expands and reveals its label while the rest compress, grey out, and tilt away in 3D. Hover or arrow-key through them. Adapted from ReactBits' AccordionGallery, rebuilt on Motion instead of GSAP.",
+      "editable": { "heading": "A", "panels": "custom hover-driven flexGrow/rotate/parallax via Motion, see file" }
+    },
+    {
+      "id": 66,
+      "name": "Hero — Image Stream",
+      "category": "hero",
+      "file": "src/registry/modules/66-hero-image-stream.tsx",
+      "component": "HeroImageStream",
+      "description": "Two rails of image cards ride from far behind the screen toward the viewer on pure CSS 3D perspective, forming a continuous corridor. Adapted from 21st.dev's Image Stream Hero.",
+      "editable": { "title": "B", "images": "custom CSS-keyframe corridor (no JS animation loop), see file" }
+    },
+    {
+      "id": 67,
+      "name": "Hero — Container Scroll Reveal",
+      "category": "showcase",
+      "file": "src/registry/modules/67-hero-container-scroll.tsx",
+      "component": "HeroContainerScroll",
+      "description": "A rounded device frame tilts back in 3D perspective at rest, then straightens and scales up as the page scrolls past, revealing a product image inside. Adapted from Aceternity's Container Scroll Animation.",
+      "editable": { "title": "custom scroll-linked translateY, see file", "card": "custom scroll-linked rotateX/scale via Motion, see file" }
+    },
+    {
+      "id": 68,
+      "name": "Gallery — Morph Slider",
+      "category": "galleries",
+      "file": "src/registry/modules/68-gallery-morph-slider.tsx",
+      "component": "GalleryMorphSlider",
+      "description": "A WebGL image slider that crossfades slides through a shader-driven pixel displacement (a scrolling noise field warps one image apart as the next resolves) instead of a CSS crossfade. Drag or use the arrow controls. Adapted from a community ogl + GSAP MorphSlider component.",
+      "editable": { "heading": "A", "slides": "custom WebGL canvas driven by `motion/react`'s animate(), see file" }
+    },
+    {
+      "id": 69,
+      "name": "Gallery — Dome",
+      "category": "galleries",
+      "file": "src/registry/modules/69-gallery-dome.tsx",
+      "component": "GalleryDome",
+      "description": "A wraparound sphere of image tiles built from CSS 3D transforms. Drag to rotate with flick inertia; click a tile to open it into a centered full-size view. Adapted from a community DomeGallery component, its drag gesture rebuilt on plain pointer events instead of @use-gesture/react.",
+      "editable": { "heading": "A", "sphere": "custom CSS 3D transforms + imperative open/close DOM choreography, see file" }
+    },
+    {
+      "id": 70,
+      "name": "Showcase — Split-Flap Display",
+      "category": "showcase",
+      "file": "src/registry/modules/70-showcase-split-flap.tsx",
+      "component": "ShowcaseSplitFlap",
+      "description": "An airport/train-station departures-board effect: tiles mechanically flip through a few random characters before landing on each message, cycling through a status-message list on a loop. Adapted from a community SplitFlapText component.",
+      "editable": { "heading": "A", "board": "custom flip-cycle text array, see file" }
+    },
+    {
+      "id": 71,
+      "name": "Gallery — Depth Carousel",
+      "category": "galleries",
+      "file": "src/registry/modules/71-gallery-depth-carousel.tsx",
+      "component": "GalleryDepthCarousel",
+      "description": "A stack of cards receding into a CSS 3D perspective, stepping the focused card forward on drag, scroll-wheel, arrow keys, or the prev/next controls while the rest fall back in depth, darken, and blur. Adapted from a community DepthCarousel component, its GSAP tween rebuilt on `motion/react`'s animate().",
+      "editable": { "heading": "A", "cards": "custom drag/wheel/keyboard-driven 3D transform carousel, see file" }
+    },
+    {
+      "id": 72,
+      "name": "Nav — Card Menu",
+      "category": "nav",
+      "file": "src/registry/modules/72-nav-card-menu.tsx",
+      "component": "NavCardMenu",
+      "description": "A collapsed pill nav that expands downward into a row of colored, themed link cards, then collapses back on toggle. Adapted from a community CardNav component, its GSAP timeline rebuilt on `motion/react`'s animate() (per-card delay for the stagger, `.then()` for the close callback).",
+      "editable": { "heading": "A", "logo": "text wordmark, see file", "cards": "custom measured expand/collapse + stagger via motion/react's animate(), see file" }
+    },
+    {
+      "id": 73,
+      "name": "Footer — Boxed Panel",
+      "category": "footer",
+      "file": "src/registry/modules/73-footer-boxed-panel.tsx",
+      "component": "FooterBoxedPanel",
+      "description": "A footer framed as its own bordered, rounded card rather than a full-width band — brand mark, nav column, mission statement, and socials on top, an inline newsletter field and legal row below. No entrance animation.",
+      "editable": {}
+    },
+    {
+      "id": 74,
+      "name": "Footer — Status Console",
+      "category": "footer",
+      "file": "src/registry/modules/74-footer-status-console.tsx",
+      "component": "FooterStatusConsole",
+      "description": "A dispatch-style newsletter panel — headline, signup, and topic tags on one side, a live status readout on the other — sits above the standard column footer. No entrance animation.",
+      "editable": {}
+    },
+    {
+      "id": 75,
+      "name": "Footer — Bold Color Card",
+      "category": "footer",
+      "file": "src/registry/modules/75-footer-bold-card.tsx",
+      "component": "FooterBoldCard",
+      "description": "A saturated gradient card carries the whole footer — brand, description, socials, and link columns — with the copyright line sitting outside it on the plain page background. No entrance animation.",
+      "editable": {}
+    },
+    {
+      "id": 76,
+      "name": "Footer — Oversized Wordmark",
+      "category": "footer",
+      "file": "src/registry/modules/76-footer-oversized-wordmark.tsx",
+      "component": "FooterOversizedWordmark",
+      "description": "A restrained top half — brand, tagline, bordered nav grid — gives way to an enormous, barely-there brand wordmark cropped off at the bottom edge. No entrance animation.",
+      "editable": {}
+    },
+    {
+      "id": 77,
+      "name": "Footer — Photo Frame",
+      "category": "footer",
+      "file": "src/registry/modules/77-footer-photo-frame.tsx",
+      "component": "FooterPhotoFrame",
+      "description": "A strip of environmental photography sits above a rounded dark panel like a card laid over a full-bleed photo — centered brand, a slim link row, socials, and a two-line meta readout in the legal row. No entrance animation.",
+      "editable": {}
+    },
+    {
+      "id": 78,
+      "name": "Showcase — Scroll Reveal Manifesto",
+      "category": "showcase",
+      "file": "src/registry/modules/78-showcase-scroll-manifesto.tsx",
+      "component": "ShowcaseScrollManifesto",
+      "description": "A pinned full-bleed statement over a photo where the text fills in word-by-word, continuously tracking scroll position (not a one-time entrance) — a few key words highlight in an accent color as they land. Bold display font, swappable in registry/lib/display-font.ts.",
+      "editable": { "eyebrow": "A", "words/emphasis": "custom scroll-scrubbed word array, see file", "background image": "landscape04, swap in file" }
+    },
+    {
+      "id": 79,
+      "name": "Showcase — Dual Scroll Marquee",
+      "category": "showcase",
+      "file": "src/registry/modules/79-showcase-dual-marquee.tsx",
+      "component": "ShowcaseDualMarquee",
+      "description": "Two oversized text rows loop continuously in opposite directions, one mixing in photo chips from the library, with an added scroll-linked drift on top of the idle loop so both rows visibly react as you scroll past. Bold display font, swappable in registry/lib/display-font.ts.",
+      "editable": { "row text": "custom phrase arrays, see file", "chip images": "custom PlaceholderImage array, see file" }
+    },
+    {
+      "id": 80,
+      "name": "Hero — Statement Dark",
+      "category": "hero",
+      "file": "src/registry/modules/80-hero-statement-dark.tsx",
+      "component": "HeroStatementDark",
+      "description": "A flat, austere dark hero: eyebrow, huge two-line statement on Effect K, subhead paragraph, no CTA buttons. The click-to-play video facade beneath it lives in its own pinned section — it zooms to near-fullscreen and loses its rounded corners, then holds pinned so there's real dwell time to watch it before it releases and scrolls away. Reuses module 29's YouTube-facade pattern and video ID.",
+      "editable": { "eyebrow": "A", "title": "K", "subhead": "A", "video id": "constant, see file" }
+    },
+    {
+      "id": 81,
+      "name": "Stats — Animated Bar Chart",
+      "category": "stats",
+      "file": "src/registry/modules/81-stats-bar-chart.tsx",
+      "component": "StatsBarChart",
+      "description": "Dark section, three columns whose fill grows from the bottom, each gated to its own slice of the pinned section's scroll progress rather than triggered on enter, so they fill strictly by scroll distance and reverse cleanly on scroll-up. A big percentage label rides the top edge of each fill, with a caption below. Pinned from sm up; below sm the section unpins and flows, since the stacked single-column content is taller than a phone viewport.",
+      "editable": { "eyebrow/heading": "A", "stats array": "custom, see file" }
+    },
+    {
+      "id": 82,
+      "name": "Showcase — Blur Exit Statement",
+      "category": "showcase",
+      "file": "src/registry/modules/82-showcase-blur-exit.tsx",
+      "component": "ShowcaseBlurExit",
+      "description": "A pinned full-screen statement that fades in, holds, then blurs and scales up as the section scrolls past — a punctuation moment between bigger sections. Bespoke scroll wiring, not part of the A-K catalog.",
+      "editable": { "statement text": "custom, see file" }
+    },
+    {
+      "id": 84,
+      "name": "Content — Resources Stack",
+      "category": "content",
+      "file": "src/registry/modules/84-content-resources-stack.tsx",
+      "component": "ContentResourcesStack",
+      "description": "A 'Playbook' section: intro paragraph and real internal links in a sticky left column, a tightly overlapping fan of cards on the right that fade/rise/rotate in with a shared stagger (Effect F-style) and then stay put together. Bespoke stagger variant, not part of the A-K catalog.",
+      "editable": { "eyebrow/heading/links": "A", "cards array": "custom, see file" }
+    },
+    {
+      "id": 85,
+      "name": "CTA — Rotating Word Closer",
+      "category": "cta",
+      "file": "src/registry/modules/85-cta-rotating-word.tsx",
+      "component": "CtaRotatingWordCloser",
+      "description": "A playful closer: 'Design Real' / a 3-up coverflow carousel (dimmed prev/next images flanking a sharp raised center image) that cycles on a timer / '[word] Systems.' beneath, plus a small credit line. Effect B on the static lines.",
+      "editable": { "lines": "B", "rotation array": "custom {image, word} pairs, see file" }
+    },
+    {
+      "id": 86,
+      "name": "Nav — Scroll Chapter Pill",
+      "category": "nav",
+      "file": "src/registry/modules/86-nav-scroll-chapter-pill.tsx",
+      "component": "NavScrollChapterPill",
+      "description": "A floating pill that relabels itself as you scroll, tracking the current chapter by scanning the named sections on each scroll and keeping the last one whose top edge has crossed a line near the top of the viewport — deliberately a scan rather than IntersectionObserver, which would lose the label once you scroll past the final chapter; hamburger opens a jump-link dropdown of all chapters. Host page must give each chapter section a matching id attribute. Optional mobileAlign=\"end\" parks the pill in the top-right corner below sm, for pages where a centred pill would sit on top of full-bleed pinned content. Optional position=\"fixed\" floats it over the page instead of reserving a line of flow, for pages whose first section is a full-bleed pinned stage. Colours read from CSS custom properties with the dark defaults as fallbacks, so a themed page can restyle it without forking.",
+      "editable": { "chapters prop": "array of {id, label}; ids must match the host page's section ids",
+        "stickyTop": "CSS length the pill parks at; raise it clear of a site header that also sticks to the top (the example pages pass 3.25rem)",
+        "position": "\"sticky\" (default, sits in normal flow) or \"fixed\" (floats over the page, costs no layout)",
+        "--nav-* custom properties": "set --nav-surface / --nav-text / --nav-muted / --nav-border / --nav-rule / --nav-panel / --nav-hover on any ancestor to theme the pill and its dropdown" }
+    },
+    {
+      "id": 87,
+      "name": "Hero — Cinematic Curtain",
+      "category": "hero",
+      "file": "src/registry/modules/87-hero-cinematic-curtain.tsx",
+      "component": "HeroCinematicCurtain",
+      "description": "A 440vh pinned opening sequence in six scrubbed beats: backdrop settles from a 1.12 zoom, headline lifts away, a hairline of accent colour draws out of the centre point on scaleY then wipes outward on scaleX to flood the frame, two stills reveal through expanding clip-paths (rectangle then diamond), a closing still scales up from zero under an accent tint with a centred heading, then splits down the middle and slides apart to uncover a light panel with a statement rising into it. Every beat runs off one shared scrollYProgress, so it rewinds exactly on scroll-up.",
+      "editable": {
+        "eyebrow": "Full-cycle advisory",
+        "headline": "newlines become separate lines",
+        "accent": "#7a0c07 — curtain colour and the closing frame's mix-blend-overlay tint",
+        "zoomHeading": "heading inside the closing frame; splits in half with it",
+        "revealLabel / revealStatement": "the light panel uncovered by the split",
+        "SLIDES array": "the three reveal stills, see file"
+      }
+    },
+    {
+      "id": 88,
+      "name": "Content — Drag Slider",
+      "category": "content",
+      "file": "src/registry/modules/88-content-drag-slider.tsx",
+      "component": "ContentDragSlider",
+      "description": "A label, an oversized statement, and a row of cards you drag sideways, with a spring-tracked DRAG tag following the cursor over the rail; a figures row closes the section. Uses Motion's drag=\"x\" with measured constraints rather than overflow scrolling, because the Lenis wrapper owns wheel events site-wide.",
+      "editable": {
+        "eyebrow": "About the practice",
+        "title": "Built on judgement, not inventory",
+        "CARDS array": "image, label, caption per card — see file",
+        "HONORS array": "figure/note pairs — see file"
+      }
+    },
+    {
+      "id": 89,
+      "name": "Stats — Column Scroller",
+      "category": "stats",
+      "file": "src/registry/modules/89-stats-column-scroller.tsx",
+      "component": "StatsColumnScroller",
+      "description": "A full-screen pinned section: three columns of oversized figures sit across the top of the frame aligned left/centre/right, and each advances to its next stat at a different scroll point so a round ripples across the frame. The standfirst and full-bleed backdrop change together, but only after a full round of column swaps completes. Edge-to-edge by design — no vignette, no inner scroll mask. Opacity routes through useScrollValue (pinned frame).",
+      "editable": {
+        "eyebrow": "By the numbers",
+        "COLUMNS array": "align + stats per column — see file",
+        "COLUMN_STEPS": "progress points at which each column advances",
+        "SCENE_STEPS / SCENES / BACKDROPS": "backdrop and standfirst changes"
+      }
+    },
+    {
+      "id": 90,
+      "name": "Gallery — Counter-Scroll Cases",
+      "category": "galleries",
+      "file": "src/registry/modules/90-gallery-counter-scroll-cases.tsx",
+      "component": "GalleryCounterScrollCases",
+      "description": "A 260vh pinned case index: two rows of numbered work slide past each other in opposite directions through the pin — Effect H's parallax logic on a horizontal axis, one row negative and one positive. Each row renders its items twice so neither end runs out of cards mid-travel.",
+      "editable": {
+        "title": "Selected work",
+        "eyebrow": "Case index",
+        "ROW_A / ROW_B arrays": "number, name, image per case — see file"
+      }
+    },
+    {
+      "id": 91,
+      "name": "Services — Title Rotator",
+      "category": "content",
+      "file": "src/registry/modules/91-services-title-rotator.tsx",
+      "component": "ServicesTitleRotator",
+      "description": "A services block shown one at a time: the headline rotates vertically line by line out of its own mask while the image panel crossfades in step and a counter reads 01 / 03. Advances on a 6s timer and on prev/next; interacting resets the timer rather than killing autoplay. Runs on its own clock — no pin, no useScroll.",
+      "editable": {
+        "eyebrow": "What we do",
+        "SERVICES array": "title lines, blurb, image per service — see file",
+        "AUTOPLAY_MS": "6000"
+      }
+    },
+    {
+      "id": 92,
+      "name": "Showcase — Perspective Expand",
+      "category": "showcase",
+      "file": "src/registry/modules/92-showcase-perspective-expand.tsx",
+      "component": "ShowcasePerspectiveExpand",
+      "description": "A 420vh pinned section where one image carries the whole transition: it starts as a small 3D-tilted card, rotates flat and grows to full bleed, then becomes the backdrop for an oversized headline revealing line by line out of its own mask, with a benefits list fading up underneath. Growth interpolates width/height inside calc() against --card-w/--card-h so the card's start size can vary per breakpoint and stays landscape on a phone.",
+      "editable": {
+        "eyebrow": "Why work with us",
+        "image": "the single expanding image",
+        "TITLE_LINES array": "one entry per headline line — see file",
+        "BENEFITS array": "label/note pairs — see file",
+        "--card-w / --card-h": "the card's start size, set per breakpoint on the card's className"
+      }
+    },
+    {
+      "id": 93,
+      "name": "Content — Sticky Split Scroller",
+      "category": "content",
+      "file": "src/registry/modules/93-content-sticky-split-scroller.tsx",
+      "component": "ContentStickySplitScroller",
+      "description": "A two-column section where the left column pins (label, oversized statement, standing CTA) while the right scrolls short blocks past it, alternating flush-left and flush-right. Built on plain CSS position:sticky plus Effect G per block rather than a scrubbed pin, because nothing here needs to reverse. Collapses to one stacked column below lg.",
+      "editable": {
+        "eyebrow": "Partnership",
+        "title": "The network is the product",
+        "ctaLabel / ctaHref": "Let's discuss / #contact",
+        "BLOCKS array": "label, optional figure, body, and left/right alignment per block — see file"
+      }
+    },
+    {
+      "id": 94,
+      "name": "Team — Split Slider",
+      "category": "team",
+      "file": "src/registry/modules/94-team-split-slider.tsx",
+      "component": "TeamSplitSlider",
+      "description": "A full-height split panel — portrait on one side, name and biography on the other — advanced with prev/next. Both halves swap on the same beat but travel in opposite vertical directions, so it reads as one card being turned over. Direction is tracked in state and passed to the variants as a custom value, so stepping backwards genuinely reverses the motion.",
+      "editable": {
+        "eyebrow": "The team",
+        "TEAM array": "name lines, role, bio, image per member — see file"
+      }
+    },
+    {
+      "id": 95,
+      "name": "Contact — Statement Form",
+      "category": "forms",
+      "file": "src/registry/modules/95-contact-statement-form.tsx",
+      "component": "ContactStatementForm",
+      "description": "A closing conversion block: an oversized statement revealed line by line on scroll, then a deliberately plain underline-only form with staggered field entry (Effect F) and a contact column alongside. Presentational only — fields carry names and labels but there is no submit handler, so the host page wires action/method or onSubmit to its own backend.",
+      "editable": {
+        "id": "contact — the anchor id",
+        "eyebrow": "Start a conversation",
+        "lines": "array of headline lines",
+        "note": "the reassurance line beside the form",
+        "FIELDS array": "name, label, placeholder, type per field — see file"
+      }
+    },
+    {
+      "id": 96,
+      "name": "Locations — Tabbed Panel",
+      "category": "content",
+      "file": "src/registry/modules/96-locations-tabbed-panel.tsx",
+      "component": "LocationsTabbedPanel",
+      "description": "A full-height office panel: tabs across the top, an oversized city name, a description, and a strip of supporting photographs over a backdrop that crossfades on tab change. Each location shows its own live local time, rendered client-only (blank during SSR) so the clock cannot cause a hydration mismatch.",
+      "editable": {
+        "eyebrow": "Where we work",
+        "LOCATIONS array": "city, IANA timeZone, building, blurb, backdrop, and four thumbs per location — see file"
+      }
+    },
+    {
+      "id": 97,
+      "name": "Nav — Kinetic Overlay",
+      "category": "nav",
+      "file": "src/registry/modules/97-nav-kinetic-overlay.tsx",
+      "component": "NavKineticOverlay",
+      "description": "A header pill whose \"Menu\" label rolls over to \"Close\" and whose plus icon spins 315° while a full-height panel flies in from the right — three coloured backdrop layers staggered behind each other, then the links swinging up from below with a slight rotation. Hovering a link holds it at full black and slides it right while every other link recedes to 20%. Adapted from a 21st.dev kinetic-navigation component whose GSAP timeline (including its CustomEase) was rebuilt on motion/react's animate(), and whose markup shipped without the stylesheet it referenced, so the visual design is authored here from what the timeline implies. Exports KineticOverlayNav alongside the demo, which is what src/components/site-nav.tsx renders as the site's own chrome.",
+      "editable": {
+        "wordmark": "text wordmark in the header pill",
+        "links": "array of {label, href}; past eight links the panel switches to a denser two-column layout",
+        "hint": "optional small uppercase hint beside the Menu button, omitted by default",
+        "CONDENSE_AT": "scroll distance in px before the sticky header condenses and fades \u2014 see file",
+        "contained": "renders the overlay absolute inside a bounded frame instead of fixed over the viewport",
+        "BACKDROP_LAYERS": "the three panel colours; the last is the surface the links sit on — see file"
+      }
+    },
+    {
+      "id": 98,
+      "name": "Nav — Split Curtain",
+      "category": "nav",
+      "file": "src/registry/modules/98-nav-split-curtain.tsx",
+      "component": "NavSplitCurtain",
+      "description": "A circular pill that opens a full-screen menu built from two halves closing in from either side. The half carrying the links is opaque so the type always has solid ground; the other is translucent, leaving the page legible behind it, so the menu reads as laid over the site rather than replacing it. The split is not down the middle: the link panel is sized to its own content (w-max plus a gutter each side) and the translucent panel takes the remainder, so no more of the page is covered than the words need — about 19% solid at 1920 and 43% on a phone. The two are flex siblings because that remainder has to be computed by layout, the content width not being knowable in CSS; they still slide in on x, which is a transform and so does not feed back into it. The link list sizes itself from its own length against 70vh, since a size that suits six links overflows at eleven. Stops Lenis while open via window.__lenis — overflow:hidden does not hold a Lenis page still. Esc closes.",
+      "editable": { "links prop": "array of {label, href}; hash hrefs are routed through Lenis by LenisProvider",
+        "trailingOpacity": "opacity of the half without the links, default 0.5; the link side stays opaque because opacity applies to a whole subtree and would take the type down with it",
+        "footer": "optional node pinned bottom-left — socials, a phone number",
+        "--nav-* custom properties": "--nav-panel (both halves), --nav-text (links), --nav-surface (pill), --nav-muted (footer)" }
+    },
+    {
+      "id": 99,
+      "name": "Hero — Filmstrip Carousel",
+      "category": "hero",
+      "file": "src/registry/modules/99-hero-filmstrip-carousel.tsx",
+      "component": "HeroFilmstripCarousel",
+      "description": "A full-bleed hero over an ambient wallpaper backdrop — three blurred, slowly-drifting gradient blobs (module 18's animate-aurora keyframe) sampled from the item accents, plus a per-active-item colour wash that crossfades on focus change, a dark vignette, and a continuous canvas confetti fall (colours also sampled from the items, off via the confetti prop). Deliberately not the focused item's own photo blown up — showing the same photo twice at once (full-bleed behind, sharp in the filmstrip) read as repetitive, and decoupling it means only the filmstrip's ~35vw thumbnails ever load full images, not every item's full-bleed photo on every render. Below the backdrop, a filmstrip of items shares one top edge; only a window renders at once — 5 on desktop (focused plus two either side), 3 on mobile (focused plus one, via hidden sm:block on the two outermost desktop slots) — so fewer, larger slots land the focused card close to a portrait photo aspect instead of a tall sliver, and it always renders at the middle slot of that window (the strip re-centres around it via layout=\"position\" FLIP animation) rather than sitting wherever its index falls. Drag the strip, click a card, use the prev/next arrow buttons, or arrow keys — all move focus by one card; deliberately not wheel-driven, since this is a full h-screen section and capturing wheel input would trap users who couldn't then scroll past it. Drag is accumulator-based rather than continuous — this carousel only ever lands on a whole card, so a distance threshold that fires one discrete step is simpler than tracking and tweening a fractional position. Fully custom interaction, not part of the A–K effect catalog, same call as modules 71, 68, and 69.",
+      "editable": {
+        "items prop": "array of {title, credit, meta, accent, image}; title supports a literal \\n for a two-line stack — accent also feeds the wallpaper blobs and confetti palette (items[0], items[mid], items[last])",
+        "brand": "small uppercase label top-left, default \"STUDIO\"",
+        "primaryCta / secondaryCta": "optional {label, href, external?}; render as a persistent pill pair under the title",
+        "confetti": "boolean, default true — set false to keep the wallpaper backdrop without the falling pieces",
+        "DESKTOP_VISIBLE / MOBILE_VISIBLE": "cards shown at once (5 / 3), and the 34vh / 16vh height and 1.6x / 1x flexGrow split for focused vs. resting card size — see the top of the file and the motion.button animate prop",
+        "the two arrow buttons": "prev/next; step() by ±1 — see the two <button> elements at the end of the filmstrip div"
+      }
+    }
+  ]
+}
