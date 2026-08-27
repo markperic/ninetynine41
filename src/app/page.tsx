@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { Hero } from "@/components/home/hero";
@@ -16,7 +17,11 @@ import { Testimonials } from "@/components/home/testimonials";
  */
 export default function Home() {
   return (
-    <main className="min-h-screen bg-white">
+    <main
+      className="min-h-screen bg-white"
+      // SiteHeader is a fixed h-24 (6rem) bar — see its own comment.
+      style={{ "--page-chrome": "6rem" } as CSSProperties}
+    >
       <SiteHeader />
       <Hero />
       <BigStatement />

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { LenisProvider } from "@/registry/lib/lenis-provider";
-import { inter, spaceGrotesk } from "@/fonts";
+import { inter } from "@/fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`h-full antialiased ${inter.variable} ${spaceGrotesk.variable}`}>
+    <html lang="en" className={`h-full antialiased ${inter.variable}`}>
       <body className="min-h-full flex flex-col font-sans">
         <LenisProvider>{children}</LenisProvider>
       </body>

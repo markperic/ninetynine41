@@ -32,7 +32,10 @@
   --color-brand-orange: var(--brand-orange);
   --color-brand-cream: var(--brand-cream);
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-display: var(--font-space-grotesk), var(--font-sans);
+  /* No separate display face — the corporate font is Inter for both body and
+     headings. Kept as an alias rather than removed so `font-display` in
+     markup doesn't need hunting down if that ever changes again. */
+  --font-display: var(--font-sans);
   --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
   /* Shared animation utilities used across modules (originally added for the

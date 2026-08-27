@@ -1,5 +1,5 @@
 import localFont from "next/font/local";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Inter } from "next/font/google";
 
 /**
  * Anton, self-hosted.
@@ -59,28 +59,23 @@ export const clashGrotesk = localFont({
 });
 
 /**
- * Site-wide brand faces for Ninetynine41 — Inter (body) and Space Grotesk
- * (display), matching the client's live WordPress theme exactly.
+ * Site-wide brand face for Ninetynine41 — Inter, confirmed by the client as
+ * the corporate font (both heading and body on the live WordPress theme:
+ * `--et_global_heading_font` and `--et_global_body_font` are both 'Inter').
+ * No separate display face — `--font-display` in globals.css just aliases
+ * back to this.
  *
- * Unlike Anton/Clash Grotesk above, these use `next/font/google` rather than
- * hand-subset local files: Next.js fetches them once at build time and
- * self-hosts the result from our own origin same as `next/font/local` does
- * (no runtime request to Google, no layout shift), it's just that Inter and
- * Space Grotesk ship enough weights/scripts that subsetting them by hand
- * isn't worth it the way it was for Anton's single weight. This is the
- * "your build environment has normal network access" case the comment at
- * the top of app/layout.tsx calls out.
+ * Uses `next/font/google` rather than a hand-subset local file: Next.js
+ * fetches it once at build time and self-hosts the result from our own
+ * origin same as `next/font/local` does (no runtime request to Google, no
+ * layout shift), it's just that Inter ships enough weights/scripts that
+ * subsetting it by hand isn't worth it the way it was for Anton's single
+ * weight. This is the "your build environment has normal network access"
+ * case the comment at the top of app/layout.tsx calls out.
  */
 export const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-inter",
-  display: "swap",
-});
-
-export const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-space-grotesk",
   display: "swap",
 });
