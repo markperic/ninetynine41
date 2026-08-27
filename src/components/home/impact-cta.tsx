@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Reveal } from "@/registry/lib/motion-variants";
+import { Reveal, ScrollReveal } from "@/registry/lib/motion-variants";
 
 export function ImpactCta() {
   return (
@@ -8,11 +8,14 @@ export function ImpactCta() {
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-black/10" />
 
       <div className="relative mx-auto max-w-6xl">
-        <Reveal effect="A" as="h2" className="max-w-xl text-5xl leading-[0.95] font-semibold tracking-tight text-white sm:text-6xl">
-          Bring change to <span className="text-brand-orange">ONE</span>.
-          <br />
-          Bring change to many.
-        </Reveal>
+        <ScrollReveal effect="M" as="h2" className="text-6xl leading-[0.95] font-semibold text-white sm:text-7xl lg:text-8xl">
+          <span className="block whitespace-nowrap">
+            Bring change to <span className="text-brand-orange">ONE</span>.
+          </span>
+          <span className="block whitespace-nowrap">
+            Bring change to <span className="text-brand-orange">many</span>.
+          </span>
+        </ScrollReveal>
 
         <Reveal effect="A" as="div" className="mt-8">
           <a
