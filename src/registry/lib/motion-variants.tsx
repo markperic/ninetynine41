@@ -271,19 +271,29 @@ function GiantFanLine({
   highlight = [],
   highlightClassName,
   style,
-  progress,
-  start,
-  end,
+  offset,
 }: {
   text: string;
   className?: string;
   highlight?: string[];
   highlightClassName?: string;
   style?: CSSProperties;
-  progress: MotionValue<number>;
-  start: number;
-  end: number;
+  offset: [string, string];
 }) {
+  // Each line tracks its *own* position crossing the viewport — not a slice
+  // of one shared container-level progress split evenly by index. The
+  // shared-progress version timed completion off how far scrolled the whole
+  // stack was, which has no fixed relationship to any one line's actual
+  // on-screen position: on a tall stack, a line low in the order finishes
+  // fanning out while it's still well above center, heading off the top of
+  // the screen, because its slice of the shared 0-1 range ran out early
+  // relative to its own travel. Anchoring each line's own useScroll target
+  // to itself guarantees "fully revealed" lines up with that line's own
+  // position (roughly mid-screen, tuned via `offset`) regardless of how
+  // tall the overall stack is or where in the sequence it sits.
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: offset as never });
+
   // Uniform `scale`, not letter-spacing: the line starts gathered small at
   // its own center (transform-origin defaults to 50% 50%) and grows to full
   // size, which reads as "fanning out to full width" without distorting any
@@ -299,15 +309,15 @@ function GiantFanLine({
   // wherever the raw scroll-derived target currently is, in either
   // direction — unlike a duration-based animate() tween, a spring has no
   // notion of "done" to get stuck at when scroll direction reverses mid-flight.
-  const rawScale = useTransform(progress, [start, end], [0.2, 1]);
+  const rawScale = useTransform(scrollYProgress, [0, 1], [0.2, 1]);
   const scale = useSpring(rawScale, { stiffness: 110, damping: 20, mass: 0.4 });
-  const rawOpacity = useTransform(progress, [start, end], [0.12, 1]);
+  const rawOpacity = useTransform(scrollYProgress, [0, 1], [0.12, 1]);
   const opacity = useSpring(rawOpacity, { stiffness: 110, damping: 20, mass: 0.4 });
   const highlightSet = new Set(highlight.map((w) => w.toLowerCase()));
   const words = text.split(" ");
 
   return (
-    <motion.div style={{ ...style, scale, opacity }} className={className}>
+    <motion.div ref={ref} style={{ ...style, scale, opacity }} className={className}>
       {words.map((word, i) => {
         const bare = word.toLowerCase().replace(/[^a-z0-9]/g, "");
         const isHighlighted = highlightSet.has(bare);
@@ -329,22 +339,30 @@ function GiantFanLine({
  * through the viewport — reading as the line fanning out to full width
  * (each line needs its own `text-center` via `lineClassName` or per-line
  * `className` so it's centered at rest, matching where it grows from).
- * Lines are staggered in sequence across the container's own scroll range —
- * line 1 fans out first, the last line finishes last. The scale/opacity are
- * `useSpring`-smoothed scroll-linked values (see `GiantFanLine`), not a
- * `whileInView` + `animate()` one-shot, so the whole thing runs in both
- * directions for free — scroll back up and the lines gather back in,
- * continuously tracking scroll position rather than playing once. Give
- * each line a `highlight` list for words that should render in
- * `highlightClassName` instead of the line's own color (matched
- * case-insensitively, punctuation ignored).
+ * Lines fan out in sequence purely because they sit lower on the page and so
+ * naturally cross the `offset` thresholds later — each one tracks its own
+ * position, not a slice of a shared timeline (see `GiantFanLine`), which is
+ * what keeps "fully revealed" lined up with roughly the same on-screen
+ * position (mid-screen by default) for every line regardless of the stack's
+ * total height. `offset` takes Motion's scroll-offset shorthand and tunes
+ * where that on-screen position is — the default starts the reveal as the
+ * line enters from the bottom and finishes it a bit past center, which
+ * roughly centers a giant single-line block's own midpoint at mid-screen
+ * once you account for its height below its top edge. The scale/opacity
+ * are `useSpring`-smoothed scroll-linked values, not a `whileInView` +
+ * `animate()` one-shot, so the whole thing runs in both directions for
+ * free — scroll back up and the lines gather back in, continuously
+ * tracking scroll position rather than playing once. Give each line a
+ * `highlight` list for words that should render in `highlightClassName`
+ * instead of the line's own color (matched case-insensitively, punctuation
+ * ignored).
  */
 export function GiantLineFan({
   className,
   lineClassName,
   highlightClassName = "text-inherit",
   lines,
-  offset = ["start 0.9", "end 0.25"],
+  offset = ["start 0.85", "start 0.45"],
 }: {
   className?: string;
   lineClassName?: string;
@@ -352,13 +370,9 @@ export function GiantLineFan({
   lines: { text: string; className?: string; style?: CSSProperties; highlight?: string[] }[];
   offset?: [string, string];
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: offset as never });
-  const count = lines.length;
-
   return (
-    <div ref={ref} className={className}>
-      {lines.map((line, i) => (
+    <div className={className}>
+      {lines.map((line) => (
         <GiantFanLine
           key={line.text}
           text={line.text}
@@ -366,9 +380,7 @@ export function GiantLineFan({
           style={line.style}
           highlight={line.highlight}
           highlightClassName={highlightClassName}
-          progress={scrollYProgress}
-          start={i / count}
-          end={(i + 1) / count}
+          offset={offset}
         />
       ))}
     </div>
