@@ -45,7 +45,7 @@ export function Hero() {
 
       <div className="relative flex flex-1 items-center">
         <div className="mx-auto w-full max-w-6xl">
-          <Reveal effect="B" as="h1" className="max-w-3xl text-5xl leading-[0.95] font-semibold tracking-tight text-white sm:text-7xl">
+          <Reveal effect="M" as="h1" className="max-w-3xl text-5xl leading-[0.95] font-semibold text-white sm:text-7xl">
             For the <span className="text-brand-orange">ONE</span>
             <br />
             who has no one.
