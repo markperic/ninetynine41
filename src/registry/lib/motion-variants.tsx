@@ -44,7 +44,7 @@ export const effectCatalog: Record<
   J: { name: "Gradient Shimmer", kind: "entrance", description: "An animated gradient sweeps across the text on load. Reserve for one hero title per page — it's a lot if overused." },
   K: { name: "Text Reveal (Split)", kind: "entrance", description: "Splits a heading into words that stagger in on load, each rising and fading. The 'expensive text reveal' look, built on Effect F's stagger rather than a separate text-splitting library. Use on at most one headline per page, same restraint as Effect J." },
   L: { name: "Giant Line Fan", kind: "scroll", description: "For a stack of large-type lines: each line starts scaled down and gathered at its own center, then grows to full size as the block scrolls through the viewport, fanning out to full width one line after another. A spring-smoothed, continuous scroll-linked transform (not a one-shot) — scrolling back up gathers it back in, exactly tracking scroll position, no shake from raw per-frame values. Words per line can be individually highlighted. One per page, same restraint as J/K." },
-  M: { name: "Fly & Fan", kind: "entrance", description: "Enters from the left like Effect C, but the letters start tightly compressed (near-zero letter-spacing) and fan out to their normal tracking as it slides in and fades up — one coordinated move, not two. A one-shot on-load tween (unlike Effect L's continuous scroll scrub), so letter-spacing's reflow cost is a non-issue here: it runs once for ~1s, not every scroll frame. Good for a hero title that wants more presence than Effect B/C alone. Sets its own letter-spacing entirely — don't also apply a `tracking-*` class alongside it." },
+  M: { name: "Fly & Fan", kind: "entrance", description: "Enters from the left like Effect C, but the letters start tightly compressed (near-zero letter-spacing) and fan out to their normal tracking as it slides in and fades up — one coordinated move, not two. Deliberately slow (~1.8s, small delay before it starts) so the motion actually reads rather than reading as a pop — a hero title is the one place on the page where a slower entrance doesn't cost patience. A one-shot on-load tween (unlike Effect L's continuous scroll scrub), so letter-spacing's reflow cost is a non-issue here: it runs once, not every scroll frame. Sets its own letter-spacing entirely — don't also apply a `tracking-*` class alongside it." },
 };
 
 export const variants: Record<Exclude<AnimationEffect, "H" | "I" | "J" | "K" | "L">, Variants> = {
@@ -77,8 +77,8 @@ export const variants: Record<Exclude<AnimationEffect, "H" | "I" | "J" | "K" | "
     show: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] } },
   },
   M: {
-    hidden: { opacity: 0, x: -140, letterSpacing: "-0.08em" },
-    show: { opacity: 1, x: 0, letterSpacing: "-0.02em", transition: { duration: 1.1, ease: [0.22, 1, 0.36, 1] } },
+    hidden: { opacity: 0, x: -180, letterSpacing: "-0.08em" },
+    show: { opacity: 1, x: 0, letterSpacing: "-0.02em", transition: { duration: 1.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] } },
   },
 };
 
