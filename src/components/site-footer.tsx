@@ -1,45 +1,60 @@
-import Link from "next/link";
-import { ArrowUp } from "lucide-react";
-import { CATEGORIES } from "@/registry/categories";
-
-const LINKS = [
-  { href: "/", label: "Home" },
-  ...CATEGORIES.map((c) => ({ href: `/demo/${c.slug}`, label: c.navLabel })),
-];
+import Image from "next/image";
+import { FacebookIcon, InstagramIcon } from "@/components/social-icons";
+import { ScrollReveal } from "@/registry/lib/motion-variants";
 
 /**
- * Site chrome, not a numbered catalog module — same reasoning as SiteNav:
- * this is navigation for the site itself, so it lives in src/components
- * rather than src/registry/modules. Every /demo page and the homepage
- * render it directly (there's no shared root layout wrapper for these
- * pages), same as how each of them renders <SiteNav /> individually.
+ * Site chrome, not a numbered catalog module — client-specific footer
+ * matching the live WordPress site's layout: stacked logo + tagline + ACNC
+ * badge on the left, an Email / Location / Social info grid on the right.
  */
 export function SiteFooter() {
   return (
-    <footer className="border-t border-zinc-200 bg-white px-6 py-10">
-      <div className="mx-auto flex max-w-6xl flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+    <footer className="bg-brand-green px-6 py-16 text-white">
+      <ScrollReveal effect="F" as="div" className="mx-auto grid max-w-6xl gap-12 sm:grid-cols-2">
         <div>
-          <Link href="/" className="text-sm font-semibold tracking-tight text-zinc-950">
-            Claude Agency System
-          </Link>
-          <p className="mt-1 max-w-xs text-sm text-zinc-500">A numbered, animated module library for composing marketing sites.</p>
+          <Image
+            src="/brand/9941-logo-stacked-reverse.png"
+            alt="Ninetynine41"
+            width={220}
+            height={76}
+            className="h-16 w-auto"
+          />
+          <p className="mt-4 font-display text-2xl text-white/90">Hope loading&hellip;</p>
+          <Image src="/brand/acnc-badge.png" alt="ACNC Registered Charity" width={72} height={72} className="mt-6 h-16 w-16" />
+          <p className="mt-6 max-w-xs text-sm text-white/70">
+            We are an <span className="font-semibold text-white">action-focused</span> charity bringing hope and
+            dignity to those who need it most. <span className="font-semibold text-white">Ninetynine41</span> is a
+            registered ACNC charity.
+          </p>
         </div>
 
-        <nav className="flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium">
-          {LINKS.map((link) => (
-            <Link key={link.href} href={link.href} className="text-zinc-600 transition-colors hover:text-zinc-950">
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-      </div>
+        <div className="grid gap-8 sm:grid-cols-1">
+          <div className="border-b border-white/15 pb-4">
+            <span className="text-sm font-semibold tracking-wide text-white/60 uppercase">Email</span>
+            <a href="mailto:info@ninetynine41.org" className="mt-1 block text-lg transition-colors hover:text-brand-orange">
+              info@ninetynine41.org
+            </a>
+          </div>
+          <div className="border-b border-white/15 pb-4">
+            <span className="text-sm font-semibold tracking-wide text-white/60 uppercase">Location</span>
+            <p className="mt-1 text-lg">Brisbane, Australia</p>
+          </div>
+          <div className="border-b border-white/15 pb-4">
+            <span className="text-sm font-semibold tracking-wide text-white/60 uppercase">Social</span>
+            <div className="mt-2 flex gap-4">
+              <a href="https://www.facebook.com/profile.php?id=61574110970003" aria-label="Facebook" className="transition-colors hover:text-brand-orange">
+                <FacebookIcon className="h-5 w-5" />
+              </a>
+              <a href="https://www.instagram.com/ninety_nine4one/" aria-label="Instagram" className="transition-colors hover:text-brand-orange">
+                <InstagramIcon className="h-5 w-5" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </ScrollReveal>
 
-      <div className="mx-auto mt-8 flex max-w-6xl items-center justify-between border-t border-zinc-100 pt-6 text-sm text-zinc-400">
-        <span>© {new Date().getFullYear()} Claude Agency System.</span>
-        <a href="#" className="inline-flex items-center gap-1.5 text-zinc-500 transition-colors hover:text-zinc-950">
-          Back to top
-          <ArrowUp className="h-3.5 w-3.5" />
-        </a>
+      <div className="mx-auto mt-12 max-w-6xl border-t border-white/10 pt-6 text-sm text-white/50">
+        Copyright &copy; Ninetynine41 {new Date().getFullYear()}. All Rights Reserved.
       </div>
     </footer>
   );

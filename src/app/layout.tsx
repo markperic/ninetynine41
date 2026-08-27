@@ -1,20 +1,17 @@
 import type { Metadata } from "next";
 import { LenisProvider } from "@/registry/lib/lenis-provider";
+import { inter, spaceGrotesk } from "@/fonts";
 import "./globals.css";
 
-// Deliberately not using next/font/google here — a starter template
-// shouldn't have a hard build-time dependency on fetching from Google Fonts.
-// Swap in next/font/local with a licensed font file, or next/font/google if
-// your build environment has normal network access, whenever you're ready.
-
 export const metadata: Metadata = {
-  title: "Claude Agency System — Module Library",
-  description: "A numbered, animated component library and starter kit for composing marketing sites with Claude Code.",
+  title: "Ninetynine41 | For the ONE who has no one",
+  description:
+    "Ninetynine41 funds, delivers and sustains real-world change through specific community projects, helping the world's poorest people.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className="h-full antialiased">
+    <html lang="en" className={`h-full antialiased ${inter.variable} ${spaceGrotesk.variable}`}>
       <body className="min-h-full flex flex-col font-sans">
         <LenisProvider>{children}</LenisProvider>
       </body>

@@ -4,6 +4,12 @@
   --background: #ffffff;
   --foreground: #171717;
 
+  /* Ninetynine41 brand — pulled directly from the live WordPress theme's
+     CSS custom properties (--gcid-primary-color / --gcid-secondary-color). */
+  --brand-green: #20321a;
+  --brand-orange: #ff5b00;
+  --brand-cream: #f6f6e9;
+
   /* Height of the floating chrome stacked at the top of the page — the bottom
      edge of the lowest element that stays pinned there. Zero by default: most
      pages float nothing, and their sections should not reserve space for it.
@@ -22,7 +28,11 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --color-brand-green: var(--brand-green);
+  --color-brand-orange: var(--brand-orange);
+  --color-brand-cream: var(--brand-cream);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: var(--font-space-grotesk), var(--font-sans);
   --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
   /* Shared animation utilities used across modules (originally added for the

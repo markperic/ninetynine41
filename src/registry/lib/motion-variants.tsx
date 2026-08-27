@@ -25,7 +25,7 @@ import {
 } from "motion/react";
 import { cn } from "@/lib/utils";
 
-export type AnimationEffect = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K";
+export type AnimationEffect = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L";
 
 export const effectCatalog: Record<
   AnimationEffect,
@@ -42,9 +42,10 @@ export const effectCatalog: Record<
   I: { name: "Hover Lift", kind: "hover", description: "Micro-interaction: lifts 4px and scales to 102% on hover/tap. Use on cards and buttons, not on entrance." },
   J: { name: "Gradient Shimmer", kind: "entrance", description: "An animated gradient sweeps across the text on load. Reserve for one hero title per page — it's a lot if overused." },
   K: { name: "Text Reveal (Split)", kind: "entrance", description: "Splits a heading into words that stagger in on load, each rising and fading. The 'expensive text reveal' look, built on Effect F's stagger rather than a separate text-splitting library. Use on at most one headline per page, same restraint as Effect J." },
+  L: { name: "Giant Statement", kind: "scroll", description: "Splits a headline into words that fade and rise in together, staggered, the moment it scrolls into view — meant to be set at hero-scale type with a heavy/condensed display font. The 'editorial big-type' look (i-d.co/spotlight-style: large condensed sans, revealed on scroll, not a continuous scrub). Words can be individually highlighted. One per page, same restraint as J/K." },
 };
 
-export const variants: Record<Exclude<AnimationEffect, "H" | "I" | "J" | "K">, Variants> = {
+export const variants: Record<Exclude<AnimationEffect, "H" | "I" | "J" | "K" | "L">, Variants> = {
   A: {
     hidden: { opacity: 0, y: 24 },
     show: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] } },
@@ -76,7 +77,7 @@ export const variants: Record<Exclude<AnimationEffect, "H" | "I" | "J" | "K">, V
 };
 
 type RevealProps = MotionProps & {
-  effect?: Exclude<AnimationEffect, "H" | "I" | "J" | "K">;
+  effect?: Exclude<AnimationEffect, "H" | "I" | "J" | "K" | "L">;
   as?: ElementType;
   className?: string;
   children?: ReactNode;
@@ -254,6 +255,68 @@ export function SplitReveal({
           {i < words.length - 1 ? " " : ""}
         </span>
       ))}
+    </MotionTag>
+  );
+}
+
+const wordStaggerContainer: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.05, delayChildren: 0.04 } },
+};
+
+const wordStaggerItem: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+};
+
+/**
+ * Effect L — giant-type statement. Splits a headline into words that fade
+ * and rise in together, staggered, the moment the block scrolls into view
+ * (built on the same stagger mechanics as Effect F, just word-by-word
+ * instead of card-by-card). Meant to be set at hero-scale type size with a
+ * heavy/condensed display font by the caller — the "editorial big-type"
+ * look (i-d.co/spotlight-style), which turns out to be a scroll-triggered
+ * reveal rather than a continuous scroll-position scrub. Words listed in
+ * `highlight` (matched case-insensitively, punctuation ignored) get
+ * `highlightClassName` instead of the default text color. Use once per page.
+ */
+export function ScrollWordHighlight({
+  as = "h2",
+  className,
+  highlightClassName = "text-inherit",
+  children,
+  highlight = [],
+}: {
+  as?: ElementType;
+  className?: string;
+  highlightClassName?: string;
+  children: string;
+  highlight?: string[];
+}) {
+  const words = children.split(" ");
+  const highlightSet = new Set(highlight.map((w) => w.toLowerCase()));
+  const MotionTag = motion[as as "div"] ?? motion.div;
+
+  return (
+    <MotionTag
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, margin: "-100px" }}
+      variants={wordStaggerContainer}
+      className={className}
+    >
+      {words.map((word, i) => {
+        const bare = word.toLowerCase().replace(/[^a-z0-9]/g, "");
+        const isHighlighted = highlightSet.has(bare);
+        return (
+          <span key={i}>
+            <motion.span variants={wordStaggerItem} className={cn("inline-block", isHighlighted && highlightClassName)}>
+              {word}
+            </motion.span>
+            {i < words.length - 1 ? " " : ""}
+          </span>
+        );
+      })}
     </MotionTag>
   );
 }
