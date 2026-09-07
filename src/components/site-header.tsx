@@ -36,9 +36,23 @@ const SOLID_AT = 40;
  *
  * `--page-chrome` in globals.css is set to this bar's resting height
  * (`6rem`) so the hero's own top padding clears it — see hero.tsx.
+ *
+ * `light` is for pages whose content is genuinely white/light all the way
+ * to the top (no dark hero to float over) — Our Team, Contact. At rest
+ * (`!solid`) the bar swaps to dark nav text and the full-color logo instead
+ * of white-on-transparent, which would otherwise be invisible against a
+ * white page. Once scrolled solid, the bar always shows white on its own
+ * opaque brand-green background regardless of `light`, since that
+ * background is never see-through. Pages with a dark/photo hero (the
+ * default) don't pass this — white-on-transparent is exactly what they want
+ * at rest. Don't pass `light` to fix an accidental white gap under the
+ * header instead — that means the section below needs its own top padding
+ * folded into its background, same as every hero already does (see
+ * donate-panel.tsx's comment for that exact bug).
  */
-export function SiteHeader() {
+export function SiteHeader({ light = false }: { light?: boolean }) {
   const [solid, setSolid] = useState(false);
+  const dark = light && !solid;
 
   useEffect(() => {
     const onScroll = () => setSolid(window.scrollY > SOLID_AT);
@@ -53,21 +67,22 @@ export function SiteHeader() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 flex items-center px-6 transition-[height,background-color] duration-300 ${
-        solid ? "h-14 bg-brand-green shadow-sm" : "h-24 bg-transparent"
+        solid ? "h-14 bg-brand-green shadow-sm" : `h-24 bg-transparent ${dark ? "border-b border-zinc-100" : ""}`
       }`}
     >
       <div className="relative flex w-full items-center justify-between">
         <Link href="/" className="shrink-0">
-          {/* Reversed to solid white — the full-color mark doesn't hold
-              contrast over a photo or the dark-green bar, and a nav logo
-              being single-color is the standard trade for that. */}
+          {/* Reversed to solid white over a dark/photo top — the full-color
+              mark doesn't hold contrast there, and a nav logo being
+              single-color is the standard trade for that. Over a light
+              page (`dark`), the mark's own colors already contrast fine. */}
           <Image
             src="/brand/9941-logo-hoz.png"
             alt="Ninetynine41"
             width={169}
             height={28}
             priority
-            className={`w-auto brightness-0 invert transition-[height] duration-300 ${solid ? "h-5" : "h-7"}`}
+            className={`w-auto transition-[height] duration-300 ${dark ? "" : "brightness-0 invert"} ${solid ? "h-5" : "h-7"}`}
           />
         </Link>
 
@@ -77,7 +92,9 @@ export function SiteHeader() {
             that, same trick module 97 doesn't need but this bar does since
             every link stays visible rather than collapsing to a hamburger. */}
         <nav className="absolute top-1/2 left-1/2 max-w-[calc(100vw-20rem)] -translate-x-1/2 -translate-y-1/2 overflow-x-auto">
-          <ul className="flex min-w-max items-center gap-7 text-sm font-semibold tracking-wide whitespace-nowrap text-white uppercase">
+          <ul
+            className={`flex min-w-max items-center gap-7 text-sm font-semibold tracking-wide whitespace-nowrap uppercase ${dark ? "text-zinc-950" : "text-white"}`}
+          >
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
                 <Link href={link.href} className="transition-colors hover:text-brand-orange">
@@ -96,7 +113,7 @@ export function SiteHeader() {
           </ul>
         </nav>
 
-        <div className="flex shrink-0 items-center gap-4 text-white">
+        <div className={`flex shrink-0 items-center gap-4 ${dark ? "text-zinc-950" : "text-white"}`}>
           <a href="https://www.facebook.com/profile.php?id=61574110970003" aria-label="Facebook" className="transition-opacity hover:opacity-70">
             <FacebookIcon className="h-4 w-4" />
           </a>
