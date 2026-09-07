@@ -4,36 +4,34 @@ import { useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { PLACEHOLDER_IMAGES } from "@/registry/lib/placeholder-images";
 import { cn } from "@/lib/utils";
 
 /**
  * Orange band, module 64 (Content, Carousel Card) in place of the old
  * static white paragraph card — the "Ninetynine41 fund, deliver and
  * sustain..." copy split across its natural sentence breaks into three
- * slides instead of one wall of text. Images are placeholders from the
- * catalog's local media library (public/images/library) — swap for real
- * project photos once the client supplies them.
+ * slides instead of one wall of text. Images are real client photos from
+ * public/images (slide1web/slide2web/slide3web).
  */
 const SLIDES = [
   {
     id: 1,
-    image: PLACEHOLDER_IMAGES.landscape02.src,
-    alt: PLACEHOLDER_IMAGES.landscape02.alt,
+    image: "/images/slide1web.jpg",
+    alt: "Ninetynine41 community project",
     content:
       "Ninetynine41 fund, deliver and sustain real-world change through specific community projects, helping the world's poorest people.",
   },
   {
     id: 2,
-    image: PLACEHOLDER_IMAGES.landscape09.src,
-    alt: PLACEHOLDER_IMAGES.landscape09.alt,
+    image: "/images/slide2web.jpg",
+    alt: "Ninetynine41 community project",
     content:
       "Ninetynine41 has the background, infrastructure and on-the-ground intel to bridge the gap between challenge and solution.",
   },
   {
     id: 3,
-    image: PLACEHOLDER_IMAGES.landscape05.src,
-    alt: PLACEHOLDER_IMAGES.landscape05.alt,
+    image: "/images/slide3web.jpg",
+    alt: "Ninetynine41 community project",
     content:
       "We don't take over; we strengthen what exists. We trust local knowledge and trust the process. We see each project through to completion.",
   },
@@ -48,8 +46,8 @@ export function TrustSection() {
   }
 
   return (
-    <section className="bg-brand-orange px-6 py-20">
-      <div className="mx-auto max-w-4xl">
+    <section className="bg-brand-orange px-6 py-32">
+      <div className="mx-auto max-w-6xl">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={slide.id}
@@ -57,12 +55,12 @@ export function TrustSection() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -24 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="grid overflow-hidden rounded-3xl bg-white shadow-xl sm:grid-cols-2"
+            className="grid overflow-hidden rounded-3xl bg-white shadow-xl sm:grid-cols-2 sm:min-h-[520px]"
           >
             <div className="relative aspect-4/3 overflow-hidden sm:aspect-auto">
               <Image src={slide.image} alt={slide.alt} fill sizes="(min-width: 640px) 50vw, 100vw" className="object-cover" />
             </div>
-            <div className="flex flex-col justify-center p-8 sm:p-10">
+            <div className="flex flex-col justify-center p-8 sm:p-14">
               <span className="text-sm font-semibold text-brand-orange">
                 {String(slide.id).padStart(2, "0")} / {String(SLIDES.length).padStart(2, "0")}
               </span>

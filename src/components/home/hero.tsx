@@ -22,6 +22,14 @@ import { Reveal, StaggerGroup } from "@/registry/lib/motion-variants";
  *
  * The headline block is centered vertically in the section (a `flex-1`
  * wrapper around it) rather than pinned to the bottom edge.
+ *
+ * Background is the client's animated version of this same cliff shot
+ * (Hero-Video.mp4) rather than the static photo — autoplaying, muted, and
+ * looped so it reads as ambient motion, not a video someone needs to
+ * control. `motion-reduce:hidden`/`motion-reduce:block` swap it back to the
+ * plain photo for prefers-reduced-motion, same as the reduced-motion checks
+ * modules 66/68/70/71 do for their own animation. The photo also stays on
+ * as the video's `poster`, so there's never a blank frame before it loads.
  */
 export function Hero() {
   return (
@@ -31,8 +39,18 @@ export function Hero() {
         alt=""
         fill
         priority
-        className="object-cover"
+        className="hidden object-cover motion-reduce:block"
       />
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        poster="/brand/hero-cliff.jpg"
+        className="absolute inset-0 h-full w-full object-cover motion-reduce:hidden"
+      >
+        <source src="/images/Hero-Video.mp4" type="video/mp4" />
+      </video>
       <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-black/25" />
 
       {/* vertical social labels, split to opposite screen edges */}
