@@ -1,0 +1,90 @@
+import { defineField, defineType } from "sanity";
+
+export const aboutPage = defineType({
+  name: "aboutPage",
+  title: "About Page",
+  type: "document",
+  fields: [
+    defineField({ name: "hero", title: "Hero", type: "heroBasic" }),
+    defineField({
+      name: "changeForOne",
+      title: "\"Change for the ONE\" section",
+      type: "object",
+      fields: [
+        { name: "heading", title: "Heading line 1", type: "string" },
+        {
+          name: "headingHighlight",
+          title: "Highlighted word in line 1",
+          description: "Must match a word that already appears in Heading line 1 above, exactly (case-insensitive).",
+          type: "string",
+        },
+        { name: "heading2", title: "Heading line 2", type: "string" },
+        { name: "image1", title: "Image 1", type: "image" },
+        { name: "image2", title: "Image 2", type: "image" },
+        { name: "paragraphs", title: "Paragraphs", type: "array", of: [{ type: "text", rows: 2 }] },
+      ],
+    }),
+    defineField({
+      name: "stats",
+      title: "Stats scroller",
+      description: "Fixed 2-column x 2-stat layout — the scroll animation is calibrated for exactly this shape.",
+      type: "object",
+      fields: [
+        { name: "column1Stat1Figure", title: "Column 1 / Stat 1 figure", type: "string" },
+        { name: "column1Stat1Note", title: "Column 1 / Stat 1 note", type: "text", rows: 2 },
+        { name: "column1Stat2Figure", title: "Column 1 / Stat 2 figure", type: "string" },
+        { name: "column1Stat2Note", title: "Column 1 / Stat 2 note", type: "text", rows: 2 },
+        { name: "column2Stat1Figure", title: "Column 2 / Stat 1 figure", type: "string" },
+        { name: "column2Stat1Note", title: "Column 2 / Stat 1 note", type: "text", rows: 2 },
+        { name: "column2Stat2Figure", title: "Column 2 / Stat 2 figure", type: "string" },
+        { name: "column2Stat2Note", title: "Column 2 / Stat 2 note", type: "text", rows: 2 },
+        { name: "backdrop1", title: "Backdrop 1", type: "image" },
+        { name: "backdrop2", title: "Backdrop 2", type: "image" },
+        { name: "scene1Text", title: "Scene 1 tagline", type: "string" },
+        { name: "scene2Text", title: "Scene 2 tagline", type: "string" },
+        { name: "footerLabel", title: "Small footer label", type: "string" },
+      ],
+    }),
+    defineField({
+      name: "supportCta",
+      title: "Support CTA bar",
+      type: "object",
+      fields: [
+        { name: "text", title: "Text", type: "string" },
+        { name: "linkLabel", title: "Link label", type: "string" },
+        { name: "linkHref", title: "Link URL", type: "string" },
+      ],
+    }),
+    defineField({
+      name: "testimonial",
+      title: "Testimonial (Srey Oun)",
+      type: "object",
+      fields: [
+        { name: "eyebrow", title: "Eyebrow", type: "string" },
+        { name: "heading", title: "Heading line 1", type: "string" },
+        {
+          name: "headingHighlight",
+          title: "Highlighted word",
+          description: "Must match a word that already appears in Heading line 1 above, exactly (case-insensitive).",
+          type: "string",
+        },
+        { name: "heading2", title: "Heading line 2", type: "string" },
+        { name: "image", title: "Image", type: "image" },
+        { name: "quote", title: "Quote", type: "text", rows: 3 },
+        { name: "name", title: "Name", type: "string" },
+        { name: "role", title: "Role", type: "string" },
+      ],
+    }),
+    defineField({
+      name: "weFocusOn",
+      title: "\"We Focus On\" section",
+      type: "object",
+      fields: [
+        { name: "eyebrow", title: "Eyebrow", type: "string" },
+        { name: "heading", title: "Heading", type: "string" },
+        { name: "features", title: "Features", type: "array", of: [{ type: "iconFeature" }] },
+      ],
+    }),
+  ],
+  preview: { prepare: () => ({ title: "About Page" }) },
+});

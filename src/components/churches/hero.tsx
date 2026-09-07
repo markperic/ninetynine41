@@ -1,16 +1,12 @@
 import Image from "next/image";
 import { Mail } from "lucide-react";
 import { Reveal } from "@/registry/lib/motion-variants";
+import { getChurchesContent } from "@/lib/content/churches";
+import { getSiteSettings } from "@/lib/content/site-settings";
+import { renderHighlighted } from "@/lib/highlight";
 
-/**
- * Churches hero — same cliff video/photo background and chrome as the
- * other page heroes, but with the stacked wordmark above the headline (the
- * live page's own treatment for this audience-specific page) instead of a
- * CTA button. No dedicated full-color stacked logo exists in /brand, so
- * this reuses the warm-toned reverse variant (9941-logo-stacked-reverse) —
- * reads fine against the hero's dark gradient overlay.
- */
-export function ChurchesHero() {
+export async function ChurchesHero() {
+  const [{ hero }, { email }] = await Promise.all([getChurchesContent(), getSiteSettings()]);
   return (
     <section className="relative flex min-h-[70vh] flex-col overflow-hidden bg-brand-green pr-6 pl-8 sm:pl-16 xl:pl-6 pt-[calc(var(--page-chrome)+1.5rem)] pb-10">
       <Image src="/brand/hero-cliff.jpg" alt="" fill priority className="hidden object-cover motion-reduce:block" />
@@ -36,13 +32,11 @@ export function ChurchesHero() {
       <div className="relative flex flex-1 items-center">
         <div className="mx-auto w-full max-w-6xl">
           <Reveal effect="E" as="div" className="mb-6">
-            <Image src="/brand/9941-logo-stacked-reverse.png" alt="Ninetynine41" width={220} height={220} className="h-28 w-auto" />
+            <Image src={hero.logo} alt="Ninetynine41" width={220} height={220} className="h-28 w-auto" />
           </Reveal>
 
           <Reveal effect="M" as="h1" className="max-w-2xl text-5xl leading-[0.95] font-semibold text-white sm:text-7xl">
-            For the <span className="text-brand-orange">ONE</span>
-            <br />
-            who has no one.
+            {renderHighlighted(hero.headline, hero.highlightWords)}
           </Reveal>
         </div>
       </div>
@@ -52,7 +46,7 @@ export function ChurchesHero() {
           <Mail className="h-4 w-4 text-white/70" />
           <div>
             <p className="text-[0.6875rem] font-semibold tracking-[0.2em] text-white/60">EMAIL</p>
-            <p className="text-sm text-white">info@ninetynine41.org</p>
+            <p className="text-sm text-white">{email}</p>
           </div>
         </div>
       </Reveal>

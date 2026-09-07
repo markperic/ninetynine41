@@ -1,29 +1,20 @@
 import Image from "next/image";
 import { ScrollReveal } from "@/registry/lib/motion-variants";
-
-const DONORS = [
-  { name: "Every Bodies Physio", src: "/brand/donor-eb-physio.png" },
-  { name: "KIND.SIR Leatherware", src: "/brand/donor-kindsir.png" },
-  { name: "PBN Constructions", src: "/brand/donor-pbn.png" },
-  { name: "Piwinski Constructions", src: "/brand/donor-piwinski.png" },
-  { name: "Harcourts Newcastle", src: "/brand/donor-harcourts.png" },
-  { name: "TS Projects", src: "/brand/donor-ts-projects.png" },
-  { name: "ESME Property Staging", src: "/brand/donor-esme.png" },
-];
+import { getHomeContent } from "@/lib/content/home";
 
 /**
  * Donors — the live site uses a manual slider (arrows + dots); here it's an
  * infinite marquee instead, using the shared `animate-marquee` utility
- * (globals.css) that other catalog modules already use for logo rows. Same
- * content, a simpler and more "flare"-appropriate mechanism.
+ * (globals.css) that other catalog modules already use for logo rows.
  */
-export function Donors() {
-  const loop = [...DONORS, ...DONORS];
+export async function Donors() {
+  const { donorsHeading, donors } = await getHomeContent();
+  const loop = [...donors, ...donors];
 
   return (
     <section className="overflow-hidden bg-brand-green py-20">
       <ScrollReveal effect="A" as="h2" className="text-center font-display text-3xl font-semibold text-brand-orange sm:text-4xl">
-        Donors
+        {donorsHeading}
       </ScrollReveal>
 
       <div className="mt-14 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
@@ -31,7 +22,7 @@ export function Donors() {
           {loop.map((donor, i) => (
             <div key={`${donor.name}-${i}`} className="flex h-16 w-40 shrink-0 items-center justify-center">
               <Image
-                src={donor.src}
+                src={donor.logo}
                 alt={donor.name}
                 width={160}
                 height={80}

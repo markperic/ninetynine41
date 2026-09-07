@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { Reveal, StaggerGroup } from "@/registry/lib/motion-variants";
+import { getHomeContent } from "@/lib/content/home";
+import { renderHighlighted } from "@/lib/highlight";
 
 /**
  * Homepage hero — full-bleed brief photo, static for now. The client is
@@ -31,7 +33,8 @@ import { Reveal, StaggerGroup } from "@/registry/lib/motion-variants";
  * modules 66/68/70/71 do for their own animation. The photo also stays on
  * as the video's `poster`, so there's never a blank frame before it loads.
  */
-export function Hero() {
+export async function Hero() {
+  const { hero } = await getHomeContent();
   return (
     <section className="relative flex min-h-[85vh] flex-col overflow-hidden bg-brand-green pr-6 pl-8 sm:pl-16 xl:pl-6 pt-[calc(var(--page-chrome)+1.5rem)] pb-14">
       <Image
@@ -63,24 +66,26 @@ export function Hero() {
 
       <div className="relative flex flex-1 items-center">
         <div className="mx-auto w-full max-w-6xl">
+          {hero.eyebrow && (
+            <Reveal effect="A" as="p" className="mb-3 text-sm font-semibold tracking-[0.2em] text-brand-orange uppercase">
+              {hero.eyebrow}
+            </Reveal>
+          )}
           <Reveal effect="M" as="h1" className="max-w-3xl text-5xl leading-[0.95] font-semibold text-white sm:text-7xl">
-            For the <span className="text-brand-orange">ONE</span>
-            <br />
-            who has no one.
+            {renderHighlighted(hero.headline, hero.highlightWords)}
           </Reveal>
 
           <StaggerGroup className="mt-6 flex flex-col gap-6">
             <Reveal effect="A" as="p" className="max-w-md text-base text-white/80 sm:text-lg">
-              Ever wanted to make a change in the world but didn&rsquo;t know where to start?{" "}
-              <span className="font-semibold text-brand-orange">Ninetynine41</span> is your answer.
+              {hero.subcopy}
             </Reveal>
 
             <Reveal effect="A" as="div">
               <a
-                href="/about"
+                href={hero.ctaHref}
                 className="inline-flex items-center gap-2 rounded-full bg-brand-orange px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-orange/90"
               >
-                Change starts here
+                {hero.ctaLabel}
                 <ArrowUpRight className="h-4 w-4" />
               </a>
             </Reveal>

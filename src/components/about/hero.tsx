@@ -1,22 +1,18 @@
 import Image from "next/image";
 import { ArrowUpRight, Mail } from "lucide-react";
 import { Reveal, StaggerGroup } from "@/registry/lib/motion-variants";
+import { getAboutContent } from "@/lib/content/about";
+import { getSiteSettings } from "@/lib/content/site-settings";
+import { renderHighlighted } from "@/lib/highlight";
 
 /**
  * About page hero — same full-bleed cliff photo and INSTAGRAM/FACEBOOK edge
  * labels as the homepage hero (src/components/home/hero.tsx), but with the
  * About page's own headline/CTA, plus the bottom-right EMAIL block the live
- * About page shows that the homepage hero doesn't. Kept as its own file
- * rather than parametrizing the homepage Hero — same call this repo already
- * made for every other home/* section, each is real content per page, not a
- * shared component with content props.
- *
- * Background video (Hero-Video.mp4) rather than a static photo — same
- * animated cliff shot as the homepage hero, autoplaying/muted/looped, with
- * a `motion-reduce:` swap back to the plain photo. See home/hero.tsx's
- * comment for the full rationale; not repeated here.
+ * About page shows that the homepage hero doesn't.
  */
-export function AboutHero() {
+export async function AboutHero() {
+  const [{ hero }, { email }] = await Promise.all([getAboutContent(), getSiteSettings()]);
   return (
     <section className="relative flex min-h-[70vh] flex-col overflow-hidden bg-brand-green pr-6 pl-8 sm:pl-16 xl:pl-6 pt-[calc(var(--page-chrome)+1.5rem)] pb-10">
       <Image src="/brand/hero-cliff.jpg" alt="" fill priority className="hidden object-cover motion-reduce:block" />
@@ -41,22 +37,26 @@ export function AboutHero() {
 
       <div className="relative flex flex-1 items-center">
         <div className="mx-auto w-full max-w-6xl">
+          {hero.eyebrow && (
+            <Reveal effect="A" as="p" className="mb-3 text-sm font-semibold tracking-[0.2em] text-brand-orange uppercase">
+              {hero.eyebrow}
+            </Reveal>
+          )}
           <Reveal effect="M" as="h1" className="max-w-2xl text-5xl leading-[0.95] font-semibold text-white sm:text-7xl">
-            About Ninetynine41
+            {renderHighlighted(hero.headline, hero.highlightWords)}
           </Reveal>
 
           <StaggerGroup className="mt-6 flex flex-col gap-6">
             <Reveal effect="A" as="p" className="max-w-md text-base text-white/80 sm:text-lg">
-              <span className="font-semibold text-brand-orange">Ninetynine41</span> fund, deliver and sustain
-              specific community projects, bringing hope and dignity to those who need it most.
+              {hero.subcopy}
             </Reveal>
 
             <Reveal effect="A" as="div">
               <a
-                href="#stats"
+                href={hero.ctaHref}
                 className="inline-flex items-center gap-2 rounded-full bg-brand-orange px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-orange/90"
               >
-                Our Impact
+                {hero.ctaLabel}
                 <ArrowUpRight className="h-4 w-4" />
               </a>
             </Reveal>
@@ -69,7 +69,7 @@ export function AboutHero() {
           <Mail className="h-4 w-4 text-white/70" />
           <div>
             <p className="text-[0.6875rem] font-semibold tracking-[0.2em] text-white/60">EMAIL</p>
-            <p className="text-sm text-white">info@ninetynine41.org</p>
+            <p className="text-sm text-white">{email}</p>
           </div>
         </div>
       </Reveal>

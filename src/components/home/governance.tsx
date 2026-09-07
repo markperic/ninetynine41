@@ -1,17 +1,18 @@
 import Image from "next/image";
 import { Reveal } from "@/registry/lib/motion-variants";
+import { getHomeContent } from "@/lib/content/home";
 
-export function Governance() {
+export async function Governance() {
+  const { governance } = await getHomeContent();
   return (
     <section className="bg-brand-cream px-6 py-24 text-center">
       <div className="mx-auto max-w-2xl">
         <Reveal effect="A" as="h2" className="font-display text-4xl font-semibold tracking-tight text-brand-green sm:text-5xl">
-          Governance
+          {governance.heading}
         </Reveal>
 
         <Reveal effect="A" as="p" className="mt-6 text-lg text-zinc-700">
-          <span className="font-semibold text-brand-orange">Ninetynine41</span> operates under the governance of
-          leading Australian development charity, <span className="font-semibold text-zinc-900">Global Development Group.</span>
+          {governance.body}
         </Reveal>
 
         <Reveal effect="E" as="div" className="mt-10 flex flex-col items-center gap-3">

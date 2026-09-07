@@ -1,14 +1,12 @@
 import Image from "next/image";
 import { ArrowUpRight, Mail } from "lucide-react";
 import { Reveal, StaggerGroup } from "@/registry/lib/motion-variants";
+import { getWhatWeDoContent } from "@/lib/content/what-we-do";
+import { getSiteSettings } from "@/lib/content/site-settings";
+import { renderHighlighted } from "@/lib/highlight";
 
-/**
- * What We Do hero — same cliff video/photo background and chrome as the
- * About/Home heroes (see about/hero.tsx), just this page's own headline/CTA
- * and EMAIL block. Kept as its own file per this repo's per-page-content
- * convention rather than parametrizing a shared Hero.
- */
-export function WhatWeDoHero() {
+export async function WhatWeDoHero() {
+  const [{ hero }, { email }] = await Promise.all([getWhatWeDoContent(), getSiteSettings()]);
   return (
     <section className="relative flex min-h-[70vh] flex-col overflow-hidden bg-brand-green pr-6 pl-8 sm:pl-16 xl:pl-6 pt-[calc(var(--page-chrome)+1.5rem)] pb-10">
       <Image src="/brand/hero-cliff.jpg" alt="" fill priority className="hidden object-cover motion-reduce:block" />
@@ -33,21 +31,26 @@ export function WhatWeDoHero() {
 
       <div className="relative flex flex-1 items-center">
         <div className="mx-auto w-full max-w-6xl">
+          {hero.eyebrow && (
+            <Reveal effect="A" as="p" className="mb-3 text-sm font-semibold tracking-[0.2em] text-brand-orange uppercase">
+              {hero.eyebrow}
+            </Reveal>
+          )}
           <Reveal effect="M" as="h1" className="max-w-2xl text-5xl leading-[0.95] font-semibold text-white sm:text-7xl">
-            What We <span className="text-brand-orange">Do</span>
+            {renderHighlighted(hero.headline, hero.highlightWords)}
           </Reveal>
 
           <StaggerGroup className="mt-6 flex flex-col gap-6">
             <Reveal effect="A" as="p" className="max-w-md text-base text-white/80 sm:text-lg">
-              We are the bridge between need and impact.
+              {hero.subcopy}
             </Reveal>
 
             <Reveal effect="A" as="div">
               <a
-                href="#how-we-work"
+                href={hero.ctaHref}
                 className="inline-flex items-center gap-2 rounded-full bg-brand-orange px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-orange/90"
               >
-                How We Work
+                {hero.ctaLabel}
                 <ArrowUpRight className="h-4 w-4" />
               </a>
             </Reveal>
@@ -60,7 +63,7 @@ export function WhatWeDoHero() {
           <Mail className="h-4 w-4 text-white/70" />
           <div>
             <p className="text-[0.6875rem] font-semibold tracking-[0.2em] text-white/60">EMAIL</p>
-            <p className="text-sm text-white">info@ninetynine41.org</p>
+            <p className="text-sm text-white">{email}</p>
           </div>
         </div>
       </Reveal>

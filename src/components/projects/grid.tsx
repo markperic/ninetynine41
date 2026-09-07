@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { PROJECTS } from "@/lib/projects";
+import { getAllProjects } from "@/lib/projects";
 import { StaggerGroup, ScrollReveal } from "@/registry/lib/motion-variants";
 
 /**
@@ -10,12 +10,13 @@ import { StaggerGroup, ScrollReveal } from "@/registry/lib/motion-variants";
  * but this section keeps that cream tint since it's a distinct visual beat
  * from the intro panel above it).
  */
-export function ProjectsGrid() {
+export async function ProjectsGrid() {
+  const projects = await getAllProjects();
   return (
     <section className="bg-[#faf3e6] px-6 py-24">
       <div className="mx-auto max-w-6xl">
         <StaggerGroup className="grid grid-cols-1 gap-8 sm:grid-cols-2">
-          {PROJECTS.map((project) => (
+          {projects.map((project) => (
             <ScrollReveal effect="A" key={project.slug}>
               <Link href={`/projects/${project.slug}`} className="group block overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5">
                 <div className="relative aspect-16/10 w-full overflow-hidden">

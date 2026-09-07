@@ -3,18 +3,20 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { PortableText } from "@portabletext/react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { ScrollReveal } from "@/registry/lib/motion-variants";
-import { PROJECTS, getProject } from "@/lib/projects";
+import { getAllProjects, getProject } from "@/lib/projects";
 
-export function generateStaticParams() {
-  return PROJECTS.map((project) => ({ slug: project.slug }));
+export async function generateStaticParams() {
+  const projects = await getAllProjects();
+  return projects.map((project) => ({ slug: project.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const project = getProject(slug);
+  const project = await getProject(slug);
   return { title: project ? `${project.title} | Ninetynine41` : "Project not found" };
 }
 
@@ -30,10 +32,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
  */
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const project = getProject(slug);
+  const [project, allProjects] = await Promise.all([getProject(slug), getAllProjects()]);
   if (!project) notFound();
 
-  const otherProjects = PROJECTS.filter((p) => p.slug !== project.slug);
+  const otherProjects = allProjects.filter((p) => p.slug !== project.slug);
 
   return (
     <main className="min-h-screen bg-white" style={{ "--page-chrome": "6rem" } as CSSProperties}>
@@ -60,13 +62,12 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
               <Image src={project.image} alt={project.imageAlt} fill sizes="(min-width: 1024px) 66vw, 100vw" className="object-cover" />
             </ScrollReveal>
 
-            <div className="mt-8 flex flex-col gap-4">
-              {project.body.map((paragraph, i) => (
-                <ScrollReveal effect="A" as="p" key={i} className="text-lg text-zinc-600">
-                  {paragraph}
-                </ScrollReveal>
-              ))}
-            </div>
+            <ScrollReveal effect="A" className="mt-8 flex flex-col gap-4 text-lg text-zinc-600">
+              <PortableText
+                value={project.body}
+                components={{ block: { normal: ({ children }) => <p>{children}</p> } }}
+              />
+            </ScrollReveal>
           </div>
 
           <aside>
