@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { Menu, X } from "lucide-react";
 import { FacebookIcon, InstagramIcon } from "@/components/social-icons";
 
 const NAV_LINKS = [
@@ -49,9 +50,21 @@ const SOLID_AT = 40;
  * header instead — that means the section below needs its own top padding
  * folded into its background, same as every hero already does (see
  * donate-panel.tsx's comment for that exact bug).
+ *
+ * Below `md`, the inline nav (with nine links plus Donate, already tight
+ * even on desktop) has no room at all — it was previously left to
+ * `overflow-x-auto`, which meant the links were technically present but
+ * not visibly reachable on a phone: no visible scrollbar, no affordance
+ * that there was more to scroll to. Below `md` it's replaced with a
+ * hamburger button that drops down a solid full-width panel (its own
+ * opaque bg-brand-green, not tied to `solid`/`dark`, since it needs to
+ * read clearly regardless of scroll position or what's under it) listing
+ * every link stacked vertically. `md` and up keeps the original inline
+ * nav untouched.
  */
 export function SiteHeader({ light = false }: { light?: boolean }) {
   const [solid, setSolid] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const dark = light && !solid;
 
   useEffect(() => {
@@ -89,9 +102,9 @@ export function SiteHeader({ light = false }: { light?: boolean }) {
         {/* max-w reserves room for the logo + icon cluster + padding on
             both sides (~20rem total) so centering never overlaps them;
             overflow-x-auto is the fallback if links still don't fit below
-            that, same trick module 97 doesn't need but this bar does since
-            every link stays visible rather than collapsing to a hamburger. */}
-        <nav className="absolute top-1/2 left-1/2 max-w-[calc(100vw-20rem)] -translate-x-1/2 -translate-y-1/2 overflow-x-auto">
+            that at md/lg widths — below md the hamburger panel takes over
+            instead, since there's no room left to scroll into at all. */}
+        <nav className="absolute top-1/2 left-1/2 hidden max-w-[calc(100vw-20rem)] -translate-x-1/2 -translate-y-1/2 overflow-x-auto md:block">
           <ul
             className={`flex min-w-max items-center gap-7 text-sm font-semibold tracking-wide whitespace-nowrap uppercase ${dark ? "text-zinc-950" : "text-white"}`}
           >
@@ -114,14 +127,55 @@ export function SiteHeader({ light = false }: { light?: boolean }) {
         </nav>
 
         <div className={`flex shrink-0 items-center gap-4 ${dark ? "text-zinc-950" : "text-white"}`}>
-          <a href="https://www.facebook.com/profile.php?id=61574110970003" aria-label="Facebook" className="transition-opacity hover:opacity-70">
+          <a
+            href="https://www.facebook.com/profile.php?id=61574110970003"
+            aria-label="Facebook"
+            className="hidden transition-opacity hover:opacity-70 sm:block"
+          >
             <FacebookIcon className="h-4 w-4" />
           </a>
-          <a href="https://www.instagram.com/ninety_nine4one/" aria-label="Instagram" className="transition-opacity hover:opacity-70">
+          <a
+            href="https://www.instagram.com/ninety_nine4one/"
+            aria-label="Instagram"
+            className="hidden transition-opacity hover:opacity-70 sm:block"
+          >
             <InstagramIcon className="h-4 w-4" />
           </a>
+
+          <button
+            type="button"
+            onClick={() => setMobileOpen((v) => !v)}
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileOpen}
+            className="md:hidden"
+          >
+            {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
         </div>
       </div>
+
+      {mobileOpen && (
+        <nav className="absolute inset-x-0 top-full max-h-[calc(100vh-var(--page-chrome))] overflow-y-auto bg-brand-green px-6 py-6 shadow-lg md:hidden">
+          <ul className="flex flex-col gap-1 text-base font-semibold tracking-wide text-white uppercase">
+            {NAV_LINKS.map((link) => (
+              <li key={link.href}>
+                <Link href={link.href} onClick={() => setMobileOpen(false)} className="block py-2.5 transition-colors hover:text-brand-orange">
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+            <li className="pt-2">
+              <Link
+                href="/donate"
+                onClick={() => setMobileOpen(false)}
+                className="inline-block rounded-full bg-brand-orange px-5 py-2 normal-case tracking-normal text-white transition-colors hover:bg-brand-orange/90"
+              >
+                Donate
+              </Link>
+            </li>
+          </ul>
+        </nav>
+      )}
     </header>
   );
 }
