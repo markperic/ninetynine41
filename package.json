@@ -10,6 +10,7 @@
     "seed:sanity": "tsx scripts/seed-sanity.mts"
   },
   "dependencies": {
+    "@medusajs/js-sdk": "^2.20.1",
     "@portabletext/react": "^8.0.1",
     "@react-three/fiber": "^9.7.0",
     "@sanity/image-url": "^2.1.1",

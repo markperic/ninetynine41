@@ -20,6 +20,9 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "img.youtube.com", pathname: "/vi/**" },
       { protocol: "https", hostname: "cdn.sanity.io", pathname: "/images/**" },
+      // Shop2Give product photos are hosted by Medusa itself (a Railway
+      // Volume behind /static — see medusa-config.ts in the Medusa repo).
+      { protocol: "https", hostname: "backend-production-fb4ea.up.railway.app", pathname: "/static/**" },
     ],
   },
   async redirects() {
