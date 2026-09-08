@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { addToCart } from "@/lib/medusa/cart";
 import type { ProductDetail } from "@/lib/medusa/products";
@@ -108,6 +109,13 @@ export function ProductDetailClient({ product, regionId }: { product: ProductDet
       </div>
 
       {status === "error" && <p className="mt-3 text-sm text-red-600">Something went wrong — please try again.</p>}
+      {status === "added" && (
+        <p className="mt-3 text-sm">
+          <Link href="/shop/cart" className="font-semibold text-brand-orange hover:underline">
+            View Cart →
+          </Link>
+        </p>
+      )}
     </div>
   );
 }
