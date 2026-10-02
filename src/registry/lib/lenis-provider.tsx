@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, type ReactNode } from "react";
+import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 
 declare global {
@@ -61,9 +62,17 @@ declare global {
  * the case that exposes it. Delegated from the document so links rendered
  * later — by any module, at any depth — are covered without registering
  * anything of their own.
+ *
+ * Not mounted on /studio. The embedded Sanity Studio scrolls inside its own
+ * panes and became unscrollable with Lenis active, so the Studio keeps
+ * native scroll.
  */
 export function LenisProvider({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
+  const isStudio = pathname?.startsWith("/studio") ?? false;
+
   useEffect(() => {
+    if (isStudio) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const lenis = new Lenis({ autoRaf: true, allowNestedScroll: true });
@@ -116,7 +125,7 @@ export function LenisProvider({ children }: { children: ReactNode }) {
       delete window.__lenis;
       lenis.destroy();
     };
-  }, []);
+  }, [isStudio]);
 
   return children;
 }
